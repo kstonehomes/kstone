@@ -2,6 +2,8 @@ import { client } from "@/sanity/client";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import FilterShowHomes from "@/components/showHomes/FilterShowHomes";
+import FilterPossesions from "@/components/quickPossessions/FilterPossesions";
 
 interface Community {
   name: string;
@@ -41,6 +43,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
+
 export default async function CommunityPage({ params }: Params) {
   const { slug } = await params;
   const community = await client.fetch<Community | null>(
@@ -56,8 +59,9 @@ export default async function CommunityPage({ params }: Params) {
   if (!community) return notFound();
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 dark:bg-gray-800 mt-4 mb-12">
-      <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Hero Section */}
+      <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl mb-10">
         <Image
           src={community.featuredImage}
           alt={community.name}
@@ -66,18 +70,65 @@ export default async function CommunityPage({ params }: Params) {
           priority
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 100vw"
         />
-       
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+              {community.name}
+            </h1>
+            <p className="text-xl text-amber-300 font-medium">
+              {community.city.name}
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="mt-8 space-y-2">
-        <p className="text-amber-500 text-2xl lg:text-4xl md:text-3xl font-semibold">
-          Read About {community.name}
-        </p>
-        <p className="text-md text-gray-700 dark:text-gray-300">
-          {community.description}
-        </p>
+      {/* Description Section */}
+      <section className="mb-16">
+        <div className="prose prose-lg dark:prose-invert max-w-none">
+          <h2 className="text-3xl font-semibold text-amber-600 mb-6">
+            About {community.name}
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+            {community.description}
+          </p>
+        </div>
+      </section>
 
-      </div>
+      {/* Listings Section */}
+      <section className="space-y-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-amber-600 mb-4">
+            Available Properties
+          </h2>
+          <div className="w-24 h-1 bg-amber-500 mx-auto"></div>
+        </div>
+
+        {/* Show Homes */}
+        <div className="bg-gray-300 dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="flex items-center mb-6">
+            <div className="flex-1">
+              <h3 className="text-2xl font-semibold text-gray-800 dark:text-white">
+                Show Homes
+              </h3>
+              <div className="w-16 h-1 bg-amber-500 mt-2"></div>
+            </div>
+          </div>
+          <FilterShowHomes community={community.name} />
+        </div>
+
+        {/* Quick Possessions */}
+        <div className="bg-gray-300 dark:bg-slate-900 rounded-xl shadow-lg p-6">
+          <div className="flex items-center mb-6">
+            <div className="flex-1">
+              <h3 className="text-2xl font-semibold text-gray-800 dark:text-white">
+                Quick Possessions
+              </h3>
+              <div className="w-16 h-1 bg-amber-500 mt-2"></div>
+            </div>
+          </div>
+          <FilterPossesions community={community.name} />
+        </div>
+      </section>
     </div>
   );
 }
