@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
-  title: "SP Home",
+  title: "Kstone Homes",
   description: "Your Dream Home, Built with Heart",
 };
 
