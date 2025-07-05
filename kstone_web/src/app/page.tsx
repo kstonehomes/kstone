@@ -100,41 +100,43 @@ export default function Home() {
       </motion.section>
 
       {/* Emotional Tagline */}
-      <motion.div
-        className="emotional_tagline flex flex-col items-center justify-center py-16 px-6 bg-white/90 dark:bg-gray-800 rounded-xl shadow-lg my-12 mx-auto max-w-4xl border border-amber-100 dark:border-gray-600"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
-        <motion.h2
-          className="text-2xl sm:text-3xl md:text-4xl font-bold text-amber-500 mb-6 tracking-wide text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          viewport={{ once: true }}
+      <div className="mx-3">
+        <motion.div
+          className="emotional_tagline flex flex-col items-center justify-center py-16 px-6 bg-white/90 dark:bg-gray-800 rounded-xl shadow-lg my-12 mx-auto max-w-4xl border border-amber-100 dark:border-gray-600"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true, margin: "-100px" }}
         >
-          YOUR HOME, YOUR STORY
-        </motion.h2>
-        <motion.p
-          className="text-gray-700 dark:text-gray-300 text-base sm:text-lg md:text-xl font-light text-center leading-relaxed max-w-3xl"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          More than walls and a roof — a home is where your life unfolds.
-          It&apos;s where laughter echoes, dreams grow, and memories are made.
-          At{" "}
-          <span className="font-semibold text-amber-600 dark:text-amber-400">
-            Kstone Homes
-          </span>
-          , we don&apos;t just build houses — we shape the spaces that shape
-          you. Explore homes designed not just for living, but for belonging.
-          Let&apos;s create the place you&apos;ll call yours — in every sense of
-          the word.
-        </motion.p>
-      </motion.div>
+          <motion.h2
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-amber-500 mb-6 tracking-wide text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            YOUR HOME, YOUR STORY
+          </motion.h2>
+          <motion.p
+            className="text-gray-700 dark:text-gray-300 text-base sm:text-lg md:text-xl font-light text-center leading-relaxed max-w-3xl"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            More than walls and a roof — a home is where your life unfolds.
+            It&apos;s where laughter echoes, dreams grow, and memories are made.
+            At{" "}
+            <span className="font-semibold text-amber-600 dark:text-amber-400">
+              Kstone Homes
+            </span>
+            , we don&apos;t just build houses — we shape the spaces that shape
+            you. Explore homes designed not just for living, but for belonging.
+            Let&apos;s create the place you&apos;ll call yours — in every sense
+            of the word.
+          </motion.p>
+        </motion.div>
+      </div>
 
       {/* Explore Your Dream Home */}
       <motion.section
