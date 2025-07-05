@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from "../loader/Loader";
 import { useEffect, useState } from "react";
@@ -7,32 +7,6 @@ import { client } from "@/sanity/client";
 import Image from "next/image";
 import { FaArrowRight, FaBath, FaBed, FaRulerCombined } from "react-icons/fa";
 import Link from "next/link";
-
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      when: "beforeChildren",
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 10,
-    },
-  },
-} as const;
-
 
 interface ShowHome {
   _id: string;
@@ -70,18 +44,18 @@ const FilterShowHomes = ({ community }: { community: string }) => {
     }
 
     const query = `*[${filters.join(" && ")}]{
-        _id,
-        houseModel,
-        houseType,
-        streetAddress,
-        "community": community->{ name },
-        province,
-        propertySize,
-        numOfBeds,
-        numOfBaths,
-        "featuredImage": featuredImage.asset->url,
-        "slug": slug.current
-      }`;
+      _id,
+      houseModel,
+      houseType,
+      streetAddress,
+      "community": community->{ name },
+      province,
+      propertySize,
+      numOfBeds,
+      numOfBaths,
+      "featuredImage": featuredImage.asset->url,
+      "slug": slug.current
+    }`;
 
     setLoading(true);
     client
@@ -96,111 +70,113 @@ const FilterShowHomes = ({ community }: { community: string }) => {
         setLoading(false);
       });
   }, [city, community]);
+
   return (
-    <div className="">
+    <div className="show-homes-container">
       {loading ? (
-        <Loader />
-      ) : data.length > 0 ? (
-        <motion.ul
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          <AnimatePresence>
-            {data.map((item) => (
-              <motion.li
-                key={item._id}
-                variants={itemVariants}
-                whileHover={{
-                  y: -5,
-                  scale: 1.02,
-                  transition: {
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 10,
-                  },
-                }}
-                className="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden border border-gray-200"
-                layout
-              >
-                {/* Image */}
-                <motion.div
-                  className="relative w-full h-52 sm:h-64"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <Image
-                    src={item.featuredImage}
-                    alt={item.houseModel}
-                    fill
-                    className="object-cover"
-                    priority={false}
-                  />
-                </motion.div>
-
-                {/* Details */}
-                <div className="p-5 space-y-2">
-                  <motion.h2
-                    className="text-2xl font-bold text-gray-800 dark:text-white"
-                    whileHover={{ color: "#d97706" }} // yellow-600
-                  >
-                    {item.houseModel}
-                  </motion.h2>
-                  <p className="text-yellow-600 font-medium uppercase">
-                    {item.community.name}
-                  </p>
-                  <p className="text-gray-500 dark:text-gray-300 font-semibold">
-                    {item.streetAddress}
-                  </p>
-                  <p className="text-base text-gray-500 dark:text-gray-200 font-semibold">
-                    {item.houseType.toUpperCase()}
-                  </p>
-
-                  <div className="flex items-center gap-4 mt-3 text-gray-700 dark:text-gray-200">
-                    <span className="flex items-center gap-1">
-                      <FaRulerCombined className="text-yellow-600" />
-                      {item.propertySize} sqft
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <FaBed className="text-yellow-600" />
-                      {item.numOfBeds}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <FaBath className="text-yellow-600" />
-                      {item.numOfBaths}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Link Button */}
-                <motion.div
-                  className="bg-yellow-600 py-3 text-center"
-                  whileHover={{ backgroundColor: "#b45309" }} // darker yellow
-                >
-                  <Link
-                    href={`/show-homes/${item.slug}`}
-                    className="text-white font-bold flex items-center justify-center"
-                  >
-                    View This Home{" "}
-                    <FaArrowRight className="inline-block ml-2 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </motion.div>
-              </motion.li>
-            ))}
-          </AnimatePresence>
-        </motion.ul>
+        <div className="flex justify-center py-16">
+          <Loader />
+        </div>
       ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center text-gray-500 dark:text-gray-300 py-10"
-        >
-          No show homes available for{" "}
-          <span className="font-semibold">
-            {community || city || "this selection"}
-          </span>
-        </motion.div>
+        <AnimatePresence mode="wait">
+          {data.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {data.map((item) => (
+                <motion.div
+                  key={item._id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  whileHover={{
+                    y: -4,
+                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                  }}
+                  className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all"
+                >
+                  {/* Image */}
+                  <div className="relative w-full aspect-[4/3]">
+                    <Image
+                      src={item.featuredImage}
+                      alt={item.houseModel}
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={false}
+                    />
+                  </div>
+
+                  {/* Details */}
+                  <div className="p-4 space-y-2">
+                    <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+                      {item.houseModel}
+                    </h2>
+                    <p className="text-amber-600 dark:text-amber-400 font-medium uppercase text-sm">
+                      {item.community.name}
+                    </p>
+                    <p className="text-gray-500 dark:text-gray-300 text-sm">
+                      {item.streetAddress}
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-200 font-semibold">
+                      {item.houseType.toUpperCase()}
+                    </p>
+
+                    <div className="flex items-center gap-4 mt-3 text-sm text-gray-600 dark:text-gray-300">
+                      <span className="flex items-center gap-1">
+                        <FaRulerCombined className="text-amber-600" />
+                        {item.propertySize} sqft
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <FaBed className="text-amber-600" />
+                        {item.numOfBeds}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <FaBath className="text-amber-600" />
+                        {item.numOfBaths}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Link Button */}
+                  <div className="px-4 pb-4">
+                    <Link
+                      href={`/show-homes/${item.slug}`}
+                      className="flex items-center justify-center w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors"
+                    >
+                      View Home <FaArrowRight className="ml-2" />
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12"
+            >
+              <div className="inline-block p-6 bg-gray-50 dark:bg-gray-700 rounded-lg max-w-md">
+                <div className="text-4xl mb-3">🏠</div>
+                <h3 className="text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  No Show Homes Available
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  Currently no show homes in{" "}
+                  <span className="font-medium text-amber-600 dark:text-amber-400">
+                    {community || city || "this area"}
+                  </span>
+                  . Please check back soon.
+                </p>
+                <Link
+                  href="/quick-possessions"
+                  className="inline-block px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md text-sm transition-colors"
+                >
+                  Browse Quick Possessions
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       )}
     </div>
   );
