@@ -7,29 +7,29 @@ import Link from "next/link";
 const banner = "/images/ks-gallery.jpg";
 
 const query = groq`
-  *[_type == "gallery"][0]{
+  *[_type == "gallery"] {
     _id,
     title,
-    images[]{
-      altText,
-      image{
-        asset->{
-          _id,
-          url,
-          metadata {
-            dimensions {
-              width,
-              height,
-              aspectRatio
-            }
+    image {
+      asset->{
+        _id,
+        url,
+        metadata {
+          dimensions {
+            width,
+            height,
+            aspectRatio
           }
         }
       }
-    }
+    },
+    altText
   }
 `;
 
 type GalleryImage = {
+  _id: string;
+  title?: string;
   altText?: string;
   image?: {
     asset?: {
@@ -46,9 +46,9 @@ type GalleryImage = {
   };
 };
 
+
 export default async function Gallery() {
-  const gallery = await client.fetch(query);
-  const images: GalleryImage[] = gallery?.images ?? [];
+  const galleryItems: GalleryImage[] = await client.fetch(query);
 
   return (
     <div className="bg-white dark:bg-gray-900">
@@ -92,28 +92,27 @@ export default async function Gallery() {
       </section>
 
       {/* Gallery Grid */}
-      {images.length > 0 ? (
+      {galleryItems.length > 0 ? (
         <section className="py-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {images.map((img, index) => {
-                const dimensions = img.image?.asset?.metadata?.dimensions;
+              {galleryItems.map((item) => {
+                const dimensions = item.image?.asset?.metadata?.dimensions;
                 const aspectRatio = dimensions?.aspectRatio || 4 / 3;
 
                 return (
                   <div
-                    key={img.image?.asset?._id || index}
+                    key={item._id}
                     className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                     style={{ aspectRatio }}
                   >
                     <Image
-                      src={img.image?.asset?.url || "/images/placeholder.jpg"}
-                      alt={img.altText || "Kstone Homes property"}
+                      src={item.image?.asset?.url || "/images/placeholder.jpg"}
+                      alt={item.altText || "Kstone Homes property"}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       quality={85}
-                      loading={index > 3 ? "lazy" : "eager"}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <div className="text-white p-3 bg-black/50 rounded-full">
@@ -152,7 +151,10 @@ export default async function Gallery() {
           <p className="text-xl text-amber-100 mb-8">
             Contact us to discuss how we can bring your dream home to life.
           </p>
-          <Link href="/contact" className="inline-block bg-white text-amber-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-bold shadow-lg transition-colors">
+          <Link
+            href="/contact"
+            className="inline-block bg-white text-amber-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-bold shadow-lg transition-colors"
+          >
             Schedule a Consultation
           </Link>
         </div>
