@@ -1,24 +1,22 @@
 "use client";
 import { useState } from "react";
-import { motion } from "framer-motion";
-
+import { motion } from "motion/react";
 import FilterByCommunity from "@/components/filterByCommunity/FilterByCommunity";
+import HeroSection from "@/components/heroSection/HeroSection";
 import CTA from "@/components/CTA/CTA";
 import PropertyCard from "@/components/propertyCard/PropertyCard";
-import HeroSection from "@/components/heroSection/HeroSection";
 
-const quickPossession = "/images/ks-quickpossession.jpg";
-
-const QuickPossessions = () => {
+const PreConstruction = () => {
   const [community, setCommunity] = useState<string>("");
+  const preConstruction = "/images/ks-preconstruction.jpg";
 
   return (
     <div className="quick_possession_wrapper overflow-hidden">
-      {/* Hero Section */}
+      {/* Hero section */}
       <HeroSection
-        heading="Quick Possessions"
+        heading="Pre-Construction"
         paragraph="Move into your dream home sooner than you imagined"
-        imageUrl={quickPossession}
+        imageUrl={preConstruction}
       />
 
       {/* Filter Section */}
@@ -44,14 +42,24 @@ const QuickPossessions = () => {
         </div>
       </motion.section>
 
-      {/* Quick Possessions Listing */}
-      <div className="w-full mx-auto px-4 sm:px-8 pb-8">
-        <PropertyCard
-          community={community}
-          propertyState={"quickPossession"}
-          propertyRef={"quick-possessions"}
-        />
-      </div>
+      {/* Results Section */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true, margin: "-100px" }}
+        className="px-4 md:px-8 pb-16"
+      >
+        <div className="w-full mx-auto">
+          {/* <FilterPossesions community={community} /> */}
+          <PropertyCard
+            community={community}
+            propertyState={"preConstruction"}
+            propertyRef={"pre-construction"}
+          />
+
+        </div>
+      </motion.section>
 
       {/* CTA Section */}
       <CTA />
@@ -59,4 +67,4 @@ const QuickPossessions = () => {
   );
 };
 
-export default QuickPossessions;
+export default PreConstruction;

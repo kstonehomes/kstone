@@ -2,7 +2,7 @@ import { client } from "@/sanity/client";
 import type { Metadata } from "next";
 
 import { PropertyUI } from "@/components/property/PropertyUI";
-interface QuickPossessionDetail {
+interface preConstructionDetails {
   _id: string;
   houseModel: string;
   houseType: string;
@@ -20,8 +20,8 @@ type Params = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const possession = await client.fetch<QuickPossessionDetail | null>(
-    `*[_type == "property" && propertyState == quickPossession && slug.current == ${slug}][0]{
+  const possession = await client.fetch<preConstructionDetails | null>(
+    `*[_type == "property" && propertyState == preConstruction && slug.current == ${slug}][0]{
       houseModel,
       "city": city->{name},
       "community": community->{name},
@@ -31,10 +31,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     { slug }
   );
 
-
   if (!possession) {
     return {
-      title: "Quick Possession Not Found",
+      title: "Pre-construction Not Found",
     };
   }
 
@@ -49,12 +48,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export default async function QuickPossessionPage({ params }: Params) {
+export default async function PreConstructions({ params }: Params) {
   const { slug } = await params;
 
   return (
     <div className="overflow-hidden">
-      <PropertyUI propertyState="quickPossession" slug={slug} />
+      <PropertyUI propertyState="preConstruction" slug={slug} />
     </div>
   );
 }

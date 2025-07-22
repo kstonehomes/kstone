@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'kstone_cms',
 
-  projectId: 'fixs5xtu',
+  projectId: '1k8147nt',
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],

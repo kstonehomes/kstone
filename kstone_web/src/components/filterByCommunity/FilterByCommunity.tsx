@@ -54,27 +54,19 @@ const FilterByCommunity = ({
       transition={{ duration: 0.4 }}
     >
       <div className="text-center mb-4 sm:mb-6">
-        <motion.h2
-          className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          Discover Your Perfect Neighborhood
-        </motion.h2>
         <motion.div
-          className="mt-2 sm:mt-3 w-16 sm:w-20 mx-auto border-t-2 border-amber-500"
+          className="mt-2 sm:mt-3 sm:w-20 mx-auto"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         />
         <motion.p
-          className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-600 dark:text-gray-300 max-w-lg mx-auto"
+          className="mt-3 sm:mt-4 text-4xl font-semibold text-golden dark:text-gray-300 mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          Select a community to explore available homes
+          Select A community
         </motion.p>
       </div>
 
@@ -84,10 +76,10 @@ const FilterByCommunity = ({
         transition={{ type: "spring", stiffness: 300 }}
       >
         <div className="relative">
-          <FiMapPin className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-amber-500 z-10 text-lg" />
+          <FiMapPin className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-golden z-10 text-lg" />
           <select
             id="community-select"
-            className="w-full border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg sm:rounded-xl px-10 sm:px-12 py-2 sm:py-3 text-sm sm:text-base font-medium focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent appearance-none cursor-pointer transition-all shadow-sm hover:shadow-md"
+            className="w-full border-2 border-golden dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg sm:rounded-xl px-10 sm:px-12 py-2 sm:py-3 text-sm sm:text-base font-medium focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent appearance-none cursor-pointer transition-all shadow-sm hover:shadow-md"
             value={community}
             onChange={(e) => setCommunity(e.target.value)}
             disabled={isLoading}

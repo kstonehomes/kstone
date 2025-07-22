@@ -7,12 +7,19 @@ import {
   FaFacebook,
   FaInstagram,
   FaYoutube,
-  FaLocationDot,
-} from "react-icons/fa6";
+  FaHome,
+  FaBuilding,
+  FaClock,
+  FaMapMarkedAlt,
+  FaImages,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 import { IoMailOpenOutline } from "react-icons/io5";
 import { GiRotaryPhone } from "react-icons/gi";
 import { useCity } from "../../../context/cityContext";
 import { client } from "@/sanity/client";
+import { FaLocationDot } from "react-icons/fa6";
 
 // Image paths
 const ksLogo = "/images/ks-logo.png";
@@ -54,38 +61,71 @@ const Footer = () => {
   }, [city]);
 
   return (
-    <footer>
+    <footer className="bg-gradient-to-b from-gray-900 to-black">
       {/* Upper Footer */}
-      <div className="content_footer p-6 border-gray-800 border-t-2 bg-black text-gray-100 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="content_footer p-6 border-t-2 border-golden-500/20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {/* Logo Block */}
-        <div className="company_info">
+        <div className="company_info flex flex-col items-start">
           <Image
             src={ksLogo}
-            alt="SP tagline logo"
+            alt="KStone Homes logo"
             width={256}
             height={80}
-            className="object-contain w-auto max-h-[100px]"
+            className="object-contain w-auto max-h-[100px] mb-4"
           />
+          <p className="text-gray-300 text-sm">
+            Building dreams into reality with quality craftsmanship and
+            exceptional service.
+          </p>
         </div>
 
         {/* Quick Links */}
         <div className="quick_menu">
-          <h3 className="text-2xl font-semibold text-yellow-400">Quick Menu</h3>
-          <ul className="mt-2 space-y-2">
+          <h3 className="text-2xl font-semibold text-golden mb-4 pb-2 border-b border-golden/30">
+            Quick Menu
+          </h3>
+          <ul className="mt-4 space-y-3">
             {[
-              "Home",
-              "Show Homes",
-              "Quick Possessions",
-              "Communities",
-              "Gallery",
-              "Contact",
+              {
+                name: "Home",
+                icon: <FaHome className="text-golden" />,
+                path: "/",
+              },
+              {
+                name: "Show Homes",
+                icon: <FaBuilding className="text-golden" />,
+                path: "/show-homes",
+              },
+              {
+                name: "Quick Possessions",
+                icon: <FaClock className="text-golden" />,
+                path: "/quick-possessions",
+              },
+              {
+                name: "Communities",
+                icon: <FaMapMarkedAlt className="text-golden" />,
+                path: "/communities",
+              },
+              {
+                name: "Gallery",
+                icon: <FaImages className="text-golden" />,
+                path: "/gallery",
+              },
+              {
+                name: "Contact",
+                icon: <FaPhoneAlt className="text-golden" />,
+                path: "/contact",
+              },
             ].map((item, index) => (
               <li key={index}>
                 <Link
-                  href={`/${item.toLowerCase().replace(" ", "-")}`}
-                  className="hover:text-yellow-300"
+                  href={item.path}
+                  className="flex items-center gap-3 hover:text-golden transition-colors duration-200 group"
                 >
-                  {item}
+                  <span className="group-hover:translate-x-1 transition-transform duration-200">
+                    {item.icon}
+                  </span>
+                  <span>{item.name}</span>
                 </Link>
               </li>
             ))}
@@ -94,17 +134,18 @@ const Footer = () => {
 
         {/* Communities List */}
         <div className="our_communities">
-          <h3 className="text-2xl font-semibold text-yellow-400">
+          <h3 className="text-2xl font-semibold text-golden mb-4 pb-2 border-b border-golden/30">
             Communities
           </h3>
-          <ul className="mt-2 space-y-2">
+          <ul className="mt-4 space-y-3">
             {data.map((community) => (
               <li key={community._id}>
                 <Link
                   href={`/communities/${community.slug}`}
-                  className="hover:text-yellow-300"
+                  className="flex items-center gap-3 hover:text-golden transition-colors duration-200 group"
                 >
-                  {community.name}
+                  <FaMapMarkerAlt className="text-golden group-hover:scale-110 transition-transform duration-200" />
+                  <span>{community.name}</span>
                 </Link>
               </li>
             ))}
@@ -113,31 +154,36 @@ const Footer = () => {
 
         {/* Contact Info */}
         <div className="contact_us">
-          <h3 className="text-2xl font-semibold text-yellow-400">Contact Us</h3>
-          <ul className="mt-2 space-y-3">
-            <li className="flex items-center gap-2">
-              <FaLocationDot className="text-yellow-400" />
+          <h3 className="text-2xl font-semibold text-golden mb-4 pb-2 border-b border-golden/30">
+            Contact Us
+          </h3>
+          <ul className="mt-4 space-y-4">
+            <li>
               <Link
                 target="_blank"
                 href="https://g.co/kgs/4pJozk9"
-                className="hover:text-yellow-300 truncate block"
+                className="flex items-start gap-3 hover:text-golden transition-colors duration-200 group"
               >
-                2817 63rd Ave NE, Leduc County T4X 3A6
+                <FaLocationDot className="text-golden mt-1 flex-shrink-0 group-hover:scale-110 transition-transform duration-200" />
+                <span>2817 63rd Ave NE, Leduc County T4X 3A6</span>
               </Link>
             </li>
-            <li className="flex items-center gap-2">
-              <IoMailOpenOutline className="text-yellow-400" />
+            <li>
               <Link
-                href="mailto:sphomesedm@gmail.com"
-                className="hover:text-yellow-300"
+                href="mailto:info@kstoneyeg.com"
+                className="flex items-center gap-3 hover:text-golden transition-colors duration-200 group"
               >
-                info@kstonehomes.ca
+                <IoMailOpenOutline className="text-golden group-hover:scale-110 transition-transform duration-200" />
+                <span>info@kstoneyeg.com</span>
               </Link>
             </li>
-            <li className="flex items-center gap-2">
-              <GiRotaryPhone className="text-yellow-400" />
-              <Link href="tel:780-254-4000" className="hover:text-yellow-300">
-                780-254-4000
+            <li>
+              <Link
+                href="tel:780-254-4000"
+                className="flex items-center gap-3 hover:text-golden transition-colors duration-200 group"
+              >
+                <GiRotaryPhone className="text-golden group-hover:scale-110 transition-transform duration-200" />
+                <span>780-254-4000</span>
               </Link>
             </li>
           </ul>
@@ -145,26 +191,44 @@ const Footer = () => {
       </div>
 
       {/* Lower Footer */}
-      <div className="primary_footer bg-black text-gray-100 p-6 flex flex-col items-center gap-4 border-t border-gray-700">
+      <div className="primary_footer bg-gradient-to-r from-gray-900 to-black text-gray-100 p-6 flex flex-col items-center gap-6 border-t border-golden/20">
         <ul className="socials flex gap-6 items-center justify-center">
           {(
             [
-              ["https://www.facebook.com/sphomeyeg", FaFacebook],
-              ["https://www.instagram.com/sp.homes.yeg/", FaInstagram],
-              ["https://youtube.com/", FaYoutube],
-            ] as [string, React.ElementType][]
-          ).map(([url, Icon], index) => (
-            <li key={index} className="text-2xl hover:text-yellow-400">
-              <Link target="_blank" href={url}>
+              [
+                "https://www.facebook.com/profile.php?id=61577303111412",
+                FaFacebook,
+                "Facebook",
+              ],
+              [
+                "https://www.instagram.com/kstone.homes",
+                FaInstagram,
+                "Instagram",
+              ],
+              ["https://youtube.com/", FaYoutube, "YouTube"],
+            ] as [string, React.ElementType, string][]
+          ).map(([url, Icon, name], index) => (
+            <li key={index}>
+              <Link
+                target="_blank"
+                href={url}
+                className="text-2xl text-gray-300 hover:text-golden transition-colors duration-300 relative group"
+                aria-label={name}
+              >
                 <Icon />
+                <span className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-xs bg-gray-800 text-golden px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                  {name}
+                </span>
               </Link>
             </li>
           ))}
         </ul>
 
-        <p className="text-lg text-center">
-          <span className="font-bold">©</span> {new Date().getFullYear()}{" "}
-          Kstone Homes. All rights reserved.
+        <p className="text-center text-gray-300">
+          <span className="font-bold text-golden">©</span>{" "}
+          {new Date().getFullYear()}{" "}
+          <span className="text-golden font-semibold">Kstone Homes</span>. All
+          rights reserved.
         </p>
       </div>
     </footer>
