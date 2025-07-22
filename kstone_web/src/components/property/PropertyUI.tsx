@@ -63,6 +63,7 @@ import {
 import { TbStairsDown } from "react-icons/tb";
 import { fadeIn, staggerContainer } from "@/app/lib/motion";
 
+
 interface PropertyUIProps {
   slug: string;
   propertyState: "preConstruction" | "quickPossession" | "showhome";
@@ -234,7 +235,18 @@ export const PropertyUI = ({ slug, propertyState }: PropertyUIProps) => {
     return <NotFoundMessage message="Property not found" />;
   }
 
-  console.log(property);
+  function getEmbedUrl(videoUrl: string): string | null {
+    try {
+      const url = new URL(videoUrl);
+      if (url.hostname === "youtu.be") {
+        return `https://www.youtube.com/embed/${url.pathname.slice(1)}`;
+      }
+      const videoId = url.searchParams.get("v");
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    } catch {
+      return null;
+    }
+  }
 
   // Key Feature
   const keyFeatures = [
@@ -444,7 +456,7 @@ export const PropertyUI = ({ slug, propertyState }: PropertyUIProps) => {
       {/* Hero Section */}
       <HeroSection
         heading={property.houseName}
-        paragraph={`${property.address} ${property.province ? "," + property.province : ""}`}
+        paragraph={`${property.address}${property.province ? ", " + property.province : ""}`}
         imageUrl={ksSingleHome}
       />
 
@@ -741,6 +753,56 @@ export const PropertyUI = ({ slug, propertyState }: PropertyUIProps) => {
           )}
         </div>
       </div>
+
+      {/* Video Tour Section */}
+      {property.videoTour && (
+        <section className="w-full bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                Virtual Tour
+              </h2>
+              <div className="w-42 h-1 bg-gradient-to-r from-golden via-amber-400 to-black/10 mx-auto rounded-full" />
+            </div>
+
+            <div className="relative w-full aspect-video mx-auto rounded-2xl overflow-hidden shadow-2xl dark:shadow-none">
+              <div className="absolute inset-0 bg-gradient-to-tr from-yellow-500/10 to-yellow-600/10 dark:from-gray-800/50 dark:to-gray-900/50 rounded-2xl pointer-events-none" />
+
+              <iframe
+                src={getEmbedUrl(property.videoTour) || ""}
+                title={`${property.houseName} Video Tour`}
+                className="w-full h-full relative z-10"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+
+              {/* Play button overlay for better UX */}
+              <div className="absolute inset-0 flex items-center justify-center z-0">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-yellow-500/90 dark:bg-yellow-600/90 rounded-full flex items-center justify-center shadow-lg">
+                  <svg
+                    className="w-8 h-8 text-white ml-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            {/* Optional caption */}
+            <p className="mt-6 text-center text-gray-500 dark:text-gray-400 text-sm">
+              Click play to experience this home in 360°
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <CTA />

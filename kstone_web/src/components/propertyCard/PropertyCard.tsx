@@ -32,6 +32,17 @@ const PropertyCard = ({ community, propertyState, propertyRef }: PropertyCardPro
   const [data, setData] = useState<PropertyCardType[]>([]);
   const [loading, setLoading] = useState(true);
 
+  function toCapitalCase(str: string): string {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map((word) =>
+        word.length > 0 ? word[0].toUpperCase() + word.slice(1) : ""
+      )
+      .join(" ");
+  }
+
+
   useEffect(() => {
     const filters = [
       '_type == "property"',
@@ -58,6 +69,7 @@ const PropertyCard = ({ community, propertyState, propertyRef }: PropertyCardPro
       houseType,
       "featuredImage": featuredImage.asset->url,
       "community": community->{ name },
+      address,
       province,
       status,
       readyStatus,
@@ -85,6 +97,8 @@ const PropertyCard = ({ community, propertyState, propertyRef }: PropertyCardPro
         setLoading(false);
       });
   }, [community, city, propertyState]);
+
+  console.log(data)
 
   const statusConfig = {
     ready: "bg-green-600",
@@ -114,7 +128,7 @@ const PropertyCard = ({ community, propertyState, propertyRef }: PropertyCardPro
                     y: -4,
                     boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
                   }}
-                  className="bg-white rounded-xs overflow-hidden shadow-md border border-gray-100 transition-all group"
+                  className="bg-white rounded-xs overflow-hidden shadow-md border border-golden transition-all group"
                 >
                   {/* Image Container */}
                   <div className="relative w-full aspect-[4/3]">
@@ -235,7 +249,9 @@ const PropertyCard = ({ community, propertyState, propertyRef }: PropertyCardPro
                         <p className="text-gray-500 truncate">
                           {item.status === "pending"
                             ? "Coming Soon"
-                            : item.address || "Address Not Available"}
+                            : item.address
+                              ? `${toCapitalCase(item.address)}, ${item.province}`
+                              : "Address Not Available"}
                         </p>
                       </div>
 

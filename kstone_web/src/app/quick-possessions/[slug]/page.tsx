@@ -2,9 +2,9 @@ import { client } from "@/sanity/client";
 import type { Metadata } from "next";
 
 import { PropertyUI } from "@/components/property/PropertyUI";
-interface QuickPossessionDetail {
+interface QuickPossessionData {
   _id: string;
-  houseModel: string;
+  houseName: string;
   houseType: string;
   city: {
     name: string;
@@ -14,39 +14,69 @@ interface QuickPossessionDetail {
   };
   shortDescription: string;
   featuredImage: string;
+  slug?: {
+    current: string;
+  };
 }
 
 type Params = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const possession = await client.fetch<QuickPossessionDetail | null>(
-    `*[_type == "property" && propertyState == quickPossession && slug.current == ${slug}][0]{
-      houseModel,
-      "city": city->{name},
-      "community": community->{name},
-      shortDescription,
-      "featuredImage": featuredImage.asset->url
-    }`,
-    { slug }
-  );
+
+  const query = `*[_type == "property" && propertyState == "quickPossession" && slug.current == $slug][0]{
+    houseName,
+    houseType,
+    "city": city->{ name },
+    "community": community->{ name },
+    shortDescription,
+    "featuredImage": featuredImage.asset->url,
+    slug
+  }`;
+
+  try {
+    const quickPossession = await client.fetch<QuickPossessionData | null>(query, {
+      slug,
+    });
 
 
-  if (!possession) {
+    if (!quickPossession) {
+      return {
+        title: "Quick Possession Not Found",
+        description: "The requested Quick Possession could not be found.",
+      };
+    }
+
+    const title = `${quickPossession.houseName} | ${quickPossession.community.name}`;
+    const description =
+      quickPossession.shortDescription ||
+      `Explore the ${quickPossession.houseName} (${quickPossession.houseType}) located in ${quickPossession.community.name}, ${quickPossession.city?.name || ""}.`;
+
     return {
-      title: "Quick Possession Not Found",
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        images: quickPossession.featuredImage ? [{ url: quickPossession.featuredImage }] : [],
+        url: quickPossession.slug?.current
+          ? `/show-homes/${quickPossession.slug.current}`
+          : undefined,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: quickPossession.featuredImage ? [quickPossession.featuredImage] : [],
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Show Home",
+      description: "Explore our show homes",
     };
   }
-
-  return {
-    title: `${possession.houseModel} | ${possession.community.name}`,
-    description:
-      possession.shortDescription ??
-      `Explore the ${possession.houseModel} in ${possession.community.name}.`,
-    openGraph: {
-      images: [possession.featuredImage],
-    },
-  };
 }
 
 export default async function QuickPossessionPage({ params }: Params) {

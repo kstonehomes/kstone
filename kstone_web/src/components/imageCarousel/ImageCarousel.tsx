@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -26,19 +26,22 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
   const [showModal, setShowModal] = useState(false);
   const [isHoveringMain, setIsHoveringMain] = useState(false);
 
-  const navigateImage = (direction: "prev" | "next") => {
-    const newIndex =
-      direction === "prev"
-        ? selectedImage === 0
-          ? images.length - 1
-          : selectedImage - 1
-        : selectedImage === images.length - 1
-          ? 0
-          : selectedImage + 1;
+  const navigateImage = useCallback(
+    (direction: "prev" | "next") => {
+      const newIndex =
+        direction === "prev"
+          ? selectedImage === 0
+            ? images.length - 1
+            : selectedImage - 1
+          : selectedImage === images.length - 1
+            ? 0
+            : selectedImage + 1;
 
-    setSelectedImage(newIndex);
-    scrollToThumbnail(newIndex);
-  };
+      setSelectedImage(newIndex);
+      scrollToThumbnail(newIndex);
+    },
+    [selectedImage, images.length]
+  );
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -70,7 +73,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [showModal]);
+  }, [showModal, navigateImage]);
 
   const scrollToThumbnail = (index: number) => {
     if (containerRef.current) {

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { FaTimes, FaChevronRight } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { FiMapPin } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
 
-const navLinks = [
+const allNavLinks = [
   { href: "/", label: "HOME" },
   { href: "/gallery", label: "GALLERY" },
   { href: "/pre-construction", label: "PRE CONSTRUCTION" },
@@ -36,7 +36,92 @@ const Navbar: React.FC = () => {
   const { setCityOpen } = useCityPopup();
   const { active, setActive } = useNavigation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [visibleLinks, setVisibleLinks] = useState(allNavLinks);
+  const [dropdownLinks, setDropdownLinks] = useState<typeof allNavLinks>([]);
+  const navRef = useRef<HTMLDivElement>(null);
+  const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  const calculateVisibleItems = useCallback(() => {
+    if (!navRef.current) return;
+
+    const nav = navRef.current;
+    const moreButtonWidth = 100; // Increased for better safety margin
+    const navRightPadding = 160; // Increased space for logo + city button
+    const maxWidth = nav.offsetWidth - navRightPadding - moreButtonWidth;
+
+    let totalWidth = 0;
+    let lastVisibleIndex = -1;
+
+    // Reset refs array
+    itemsRef.current = itemsRef.current.slice(0, allNavLinks.length);
+
+    for (let i = 0; i < allNavLinks.length; i++) {
+      const el = itemsRef.current[i];
+      if (!el) continue;
+
+      const elWidth = el.offsetWidth;
+      totalWidth += elWidth;
+
+      if (totalWidth <= maxWidth) {
+        lastVisibleIndex = i;
+      } else {
+        break;
+      }
+    }
+
+    // Ensure at least 3 items are always visible
+    const minVisible = Math.min(3, allNavLinks.length);
+    lastVisibleIndex = Math.max(lastVisibleIndex, minVisible - 1);
+
+    setVisibleLinks(allNavLinks.slice(0, lastVisibleIndex + 1));
+    setDropdownLinks(allNavLinks.slice(lastVisibleIndex + 1));
+  }, []);
+
+  // Handle resize events with debounce
+  useEffect(() => {
+    calculateVisibleItems();
+
+    let resizeTimer: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        calculateVisibleItems();
+      }, 200);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimer);
+    };
+  }, [calculateVisibleItems]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Recalculate when mobile menu toggles
+  useEffect(() => {
+    if (!mobileOpen) {
+      calculateVisibleItems();
+    }
+  }, [mobileOpen, calculateVisibleItems]);
 
   const handleLinkClick = useCallback(
     (href: string) => {
@@ -47,6 +132,7 @@ const Navbar: React.FC = () => {
 
       setActive(href);
       setMobileOpen(false);
+      setDropdownOpen(false);
       router.push(href);
     },
     [city, setActive, setCityOpen, router]
@@ -55,13 +141,17 @@ const Navbar: React.FC = () => {
   const isActive = useCallback((href: string) => active === href, [active]);
 
   return (
-    <nav className="navigation">
+    <nav className="navigation relative z-[100]">
       {/* Main Navbar */}
       <div className="h-24 bg-gradient-to-b from-gray-900 to-gray-800 py-3 px-4 md:px-8 fixed top-0 left-0 right-0 z-[100] shadow-lg border-b border-golden/20">
         <div className="max-w-[1480px] mx-auto flex items-center justify-between h-full">
           {/* Logo & City Selector */}
           <div className="flex items-center gap-3">
-            <Link href="/" className="hover:opacity-90 transition-opacity">
+            <Link
+              href="/"
+              className="hover:opacity-90 transition-opacity"
+              onClick={() => setActive("/")}
+            >
               <Image
                 src={ksLogo}
                 alt="Kstone Homes Logo"
@@ -77,7 +167,7 @@ const Navbar: React.FC = () => {
               aria-label="Choose city"
             >
               <FiMapPin className="text-golden" />
-              <span className="text-sm md:text-base">
+              <span className="text-sm md:text-base whitespace-nowrap">
                 {city || "Choose City"}
               </span>
               <IoIosArrowDown className="text-golden/80 group-hover:rotate-180 transition-transform duration-300" />
@@ -85,32 +175,91 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <ul className="hidden lg:flex gap-6 xl:gap-8">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <button
-                  onClick={() => handleLinkClick(link.href)}
-                  className={`relative text-sm xl:text-base font-medium tracking-wide text-offwhite hover:text-golden transition-colors duration-200 px-1 py-2 cursor-pointer ${
-                    isActive(link.href) ? "text-golden" : ""
-                  }`}
-                  aria-current={isActive(link.href) ? "page" : undefined}
+          <div ref={navRef} className="hidden lg:flex items-center">
+            <ul className="flex items-center gap-6 xl:gap-8">
+              {visibleLinks.map((link, index) => (
+                <li
+                  key={link.href}
+                  ref={(el) => {
+                    itemsRef.current[index] = el;
+                  }}
                 >
-                  {link.label}
-                  {isActive(link.href) && (
-                    <motion.span
-                      layoutId="nav-underline"
-                      className="absolute left-0 bottom-0 w-full h-0.5 bg-golden"
-                      transition={{
-                        type: "spring",
-                        bounce: 0.2,
-                        duration: 0.6,
-                      }}
+                  <button
+                    onClick={() => handleLinkClick(link.href)}
+                    className={`relative text-sm xl:text-base font-medium tracking-wide text-offwhite hover:text-golden transition-colors duration-200 px-1 py-2 cursor-pointer whitespace-nowrap ${
+                      isActive(link.href) ? "text-golden" : ""
+                    }`}
+                    aria-current={isActive(link.href) ? "page" : undefined}
+                  >
+                    {link.label}
+                    {isActive(link.href) && (
+                      <motion.span
+                        layoutId="nav-underline"
+                        className="absolute left-0 bottom-0 w-full h-0.5 bg-golden"
+                        transition={{
+                          type: "spring",
+                          bounce: 0.2,
+                          duration: 0.6,
+                        }}
+                      />
+                    )}
+                  </button>
+                </li>
+              ))}
+
+              {/* Dynamic dropdown for overflow items */}
+              {dropdownLinks.length > 0 && (
+                <li className="relative">
+                  <button
+                    onMouseEnter={() => setDropdownOpen(true)}
+                    onMouseLeave={() => setDropdownOpen(false)}
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className={`flex items-center gap-1 text-sm xl:text-base font-medium tracking-wide px-1 py-2 cursor-pointer whitespace-nowrap ${
+                      dropdownLinks.some((link) => isActive(link.href))
+                        ? "text-golden"
+                        : "text-offwhite hover:text-golden"
+                    }`}
+                  >
+                    MORE
+                    <IoIosArrowDown
+                      className={`transition-transform duration-200 ${
+                        dropdownOpen ? "rotate-180" : ""
+                      }`}
                     />
-                  )}
-                </button>
-              </li>
-            ))}
-          </ul>
+                  </button>
+
+                  <AnimatePresence>
+                    {dropdownOpen && (
+                      <motion.div
+                        ref={dropdownRef}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full right-0 mt-1 min-w-[180px] bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50 overflow-hidden"
+                        onMouseEnter={() => setDropdownOpen(true)}
+                        onMouseLeave={() => setDropdownOpen(false)}
+                      >
+                        {dropdownLinks.map((link) => (
+                          <button
+                            key={link.href}
+                            onClick={() => handleLinkClick(link.href)}
+                            className={`w-full text-left px-4 py-3 hover:bg-gray-700 transition-colors text-sm ${
+                              isActive(link.href)
+                                ? "text-golden bg-gray-700/50"
+                                : "text-offwhite"
+                            }`}
+                          >
+                            {link.label}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </li>
+              )}
+            </ul>
+          </div>
 
           {/* Mobile Nav Toggle */}
           <button
@@ -128,11 +277,10 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Enhanced Mobile Menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <>
-            {/* Overlay with blur effect */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -142,7 +290,6 @@ const Navbar: React.FC = () => {
               onClick={() => setMobileOpen(false)}
             />
 
-            {/* Menu Panel sliding from right */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -154,7 +301,6 @@ const Navbar: React.FC = () => {
               }}
               className="fixed top-0 right-0 h-full w-[320px] max-w-[85vw] bg-gradient-to-b from-gray-900 to-gray-800 shadow-2xl z-[100] border-l border-golden/30 flex flex-col"
             >
-              {/* Header with close button */}
               <div className="flex justify-between items-center px-6 py-5 border-b border-gray-700">
                 <Image
                   src={ksLogo}
@@ -172,10 +318,9 @@ const Navbar: React.FC = () => {
                 </button>
               </div>
 
-              {/* Menu Items */}
               <div className="flex-1 overflow-y-auto py-4">
                 <ul className="space-y-2 px-4">
-                  {navLinks.map((link) => (
+                  {allNavLinks.map((link) => (
                     <motion.li
                       key={link.href}
                       initial={{ opacity: 0, x: 20 }}
@@ -207,7 +352,6 @@ const Navbar: React.FC = () => {
                 </ul>
               </div>
 
-              {/* Current City Display */}
               <div className="p-6 border-t border-gray-700">
                 <button
                   onClick={() => {

@@ -20,6 +20,7 @@ import { GiRotaryPhone } from "react-icons/gi";
 import { useCity } from "../../../context/cityContext";
 import { client } from "@/sanity/client";
 import { FaLocationDot } from "react-icons/fa6";
+import { MdOutlineConstruction } from "react-icons/md";
 
 // Image paths
 const ksLogo = "/images/ks-logo.png";
@@ -92,6 +93,16 @@ const Footer = () => {
                 path: "/",
               },
               {
+                name: "Gallery",
+                icon: <FaImages className="text-golden" />,
+                path: "/gallery",
+              },
+              {
+                name: "Pre-Construction",
+                icon: <MdOutlineConstruction className="text-golden" />,
+                path: "/pre-construction",
+              },
+              {
                 name: "Show Homes",
                 icon: <FaBuilding className="text-golden" />,
                 path: "/show-homes",
@@ -106,11 +117,7 @@ const Footer = () => {
                 icon: <FaMapMarkedAlt className="text-golden" />,
                 path: "/communities",
               },
-              {
-                name: "Gallery",
-                icon: <FaImages className="text-golden" />,
-                path: "/gallery",
-              },
+
               {
                 name: "Contact",
                 icon: <FaPhoneAlt className="text-golden" />,
