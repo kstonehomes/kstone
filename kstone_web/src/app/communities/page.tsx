@@ -81,7 +81,7 @@ const Communities = () => {
   };
 
   return (
-    <div className="communities_wrapper overflow-hidden bg-offwhite dark:bg-darkgray">
+    <div className="communities_wrapper overflow-hidden bg-offwhite">
       {/* Hero Section */}
       <HeroSection
         heading="Our Premier Communities"
@@ -90,7 +90,7 @@ const Communities = () => {
       />
 
       {/* Community Grid Section */}
-      <section className="py-12 sm:py-20 bg-offwhite dark:bg-darkgray">
+      <section className="py-12 sm:py-20 bg-offwhite">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-16">
             <motion.h2
@@ -108,7 +108,7 @@ const Communities = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-base mt-8 sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
+              className="text-base mt-8 sm:text-lg text-gray-600 max-w-2xl mx-auto"
             >
               Discover the finest neighborhoods crafted for exceptional living
             </motion.p>

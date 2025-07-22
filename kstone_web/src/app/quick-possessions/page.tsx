@@ -13,7 +13,7 @@ const QuickPossessions = () => {
   const [community, setCommunity] = useState<string>("");
 
   return (
-    <div className="quick_possession_wrapper overflow-hidden">
+    <div className="quick_possession_wrapper bg-white overflow-hidden">
       {/* Hero Section */}
       <HeroSection
         heading="Quick Possessions"
@@ -27,7 +27,7 @@ const QuickPossessions = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true, margin: "-100px" }}
-        className="px-6 py-12 bg-white dark:bg-gray-900"
+        className="px-6 py-12"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div

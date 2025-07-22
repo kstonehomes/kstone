@@ -186,11 +186,11 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="tel:780-254-4000"
+                href="tel:17802772277"
                 className="flex items-center gap-3 hover:text-golden transition-colors duration-200 group"
               >
                 <GiRotaryPhone className="text-golden group-hover:scale-110 transition-transform duration-200" />
-                <span>780-254-4000</span>
+                <span>+1 (780) 277-2277</span>
               </Link>
             </li>
           </ul>

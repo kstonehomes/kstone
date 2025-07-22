@@ -13,7 +13,7 @@ const ShowHome = () => {
   const [community, setCommunity] = useState<string>("");
 
   return (
-    <div className="show_homes_wrapper overflow-hidden">
+    <div className="bg-white show_homes_wrapper overflow-hidden">
       {/* Hero Section */}
       <HeroSection
         heading="Show Homes"
@@ -27,7 +27,7 @@ const ShowHome = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true, margin: "-100px" }}
-        className="px-6 py-12 bg-white dark:bg-gray-900"
+        className="px-6 py-12 bg-white"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div

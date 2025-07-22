@@ -12,7 +12,7 @@ const WhatsApp = () => {
         animate={{
           opacity: 1,
           scale: 1,
-          rotate: [0, 5, -5, 5, -5, 0], // Shaking animation
+          rotate: [0, 5, -5, 5, -5, 0],
         }}
         transition={{
           rotate: {

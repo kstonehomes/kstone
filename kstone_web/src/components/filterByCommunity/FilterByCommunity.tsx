@@ -61,7 +61,7 @@ const FilterByCommunity = ({
           transition={{ delay: 0.3, duration: 0.5 }}
         />
         <motion.p
-          className="mt-3 sm:mt-4 text-4xl font-semibold text-golden dark:text-gray-300 mx-auto"
+          className="mt-3 sm:mt-4 text-4xl font-semibold text-golden mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -79,7 +79,7 @@ const FilterByCommunity = ({
           <FiMapPin className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-golden z-10 text-lg" />
           <select
             id="community-select"
-            className="w-full border-2 border-golden dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg sm:rounded-xl px-10 sm:px-12 py-2 sm:py-3 text-sm sm:text-base font-medium focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent appearance-none cursor-pointer transition-all shadow-sm hover:shadow-md"
+            className="w-full border-2 border-golden bg-white text-gray-800 rounded-lg sm:rounded-xl px-10 sm:px-12 py-2 sm:py-3 text-sm sm:text-base font-medium focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent appearance-none cursor-pointer transition-all shadow-sm hover:shadow-md"
             value={community}
             onChange={(e) => setCommunity(e.target.value)}
             disabled={isLoading}
@@ -121,7 +121,7 @@ const FilterByCommunity = ({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
-            <span className="inline-block bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
+            <span className="inline-block bg-amber-100 text-amber-800 px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
               Showing homes in: <strong>{community}</strong>
             </span>
           </motion.div>

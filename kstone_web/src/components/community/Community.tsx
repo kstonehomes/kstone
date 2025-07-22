@@ -35,7 +35,7 @@ export default function CommunityContent({
   community: Community;
 }) {
   return (
-    <div className="bg-gray-50 dark:bg-gray-900">
+    <div className="bg-gray-50">
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] min-h-[400px] max-h-[800px]">
         <motion.div
@@ -100,7 +100,7 @@ export default function CommunityContent({
             variants={fadeIn}
             className="prose prose-lg dark:prose-invert max-w-4xl"
           >
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg md:text-xl">
+            <p className="text-gray-700 leading-relaxed text-lg md:text-xl">
               {community.description}
             </p>
           </motion.div>
@@ -127,7 +127,7 @@ export default function CommunityContent({
             {/* Show Homes Card */}
             <motion.div
               variants={fadeIn}
-              className="bg-white pb-2 sm:pb-6 dark:bg-gray-800 rounded-sm shadow-sm overflow-hidden border border-golden/40  transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col h-full"
+              className="bg-white pb-2 sm:pb-6 rounded-sm shadow-sm overflow-hidden border border-golden/40  transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col h-full"
             >
               <div className="bg-gradient-to-r from-amber-500 to-amber-600 p-3 sm:p-6">
                 <div className="flex items-center justify-center sm:justify-start">
@@ -157,7 +157,7 @@ export default function CommunityContent({
             <motion.div
               variants={fadeIn}
               transition={{ delay: 0.1 }}
-              className="bg-white pb-2 sm:pb-6 dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-blue-500/40 transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col h-full"
+              className="bg-white pb-2 sm:pb-6 rounded-xl shadow-lg overflow-hidden border border-blue-500/40 transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col h-full"
             >
               <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 sm:p-6">
                 <div className="flex items-center justify-center sm:justify-start">

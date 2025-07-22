@@ -32,7 +32,7 @@ export default async function GalleryPage() {
   const galleryItems = await client.fetch(query);
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-white">
       {/* Hero Banner */}
       <HeroSection
         heading="Design Gallery"
@@ -41,12 +41,12 @@ export default async function GalleryPage() {
       />
 
       {/* Gallery Intro */}
-      <section className="py-12 bg-gray-50 dark:bg-gray-800">
+      <section className="py-12 ">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-golden dark:text-amber-400 mb-4">
             Modern Design Showcase
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-lg text-gray-600 leading-relaxed">
             Browse through our collection of premium properties featuring luxury
             homes, innovative designs, and exceptional craftsmanship that define
             the Kstone Homes experience.

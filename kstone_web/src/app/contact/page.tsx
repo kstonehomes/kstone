@@ -17,7 +17,7 @@ const contactItems = [
     value: "info@kstonehomes.com",
     href: "mailto:info@kstonehomes.com",
     cta: "Drop Us an Email",
-    iconAnimation: { rotate: 5, scale: 1.05 }, // Reduced animation intensity
+    iconAnimation: { rotate: 5, scale: 1.05 },
   },
   {
     icon: FaPhoneAlt,
@@ -39,7 +39,7 @@ const contactItems = [
 
 const Contact = () => {
   return (
-    <div className="contact-page bg-offwhite dark:bg-darkgray pb-16">
+    <div className="contact-page bg-offwhite pb-16">
       {/* Hero Section */}
       <HeroSection
         heading="Contact Us"
@@ -102,7 +102,7 @@ const ContactCard = ({ info }:{info:any}) => (
       href={info.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col items-center bg-gradient-to-b from-white to-offwhite dark:from-dark dark:to-darkgray border-2 border-golden/30 rounded-2xl p-8 gap-6 hover:shadow-lg transition-all duration-300 h-full relative overflow-hidden"
+      className="group flex flex-col items-center bg-gradient-to-b from-white to-offwhite border-2 border-golden/30 rounded-2xl p-8 gap-6 hover:shadow-lg transition-all duration-300 h-full relative overflow-hidden"
     >
       {/* Simplified animated background */}
       <div className="absolute inset-0 bg-golden/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -119,16 +119,16 @@ const ContactCard = ({ info }:{info:any}) => (
 
       {/* Text content */}
       <div className="text-center space-y-3 z-10">
-        <h3 className="text-xl font-bold text-dark dark:text-white group-hover:text-golden transition-colors">
+        <h3 className="text-xl font-bold text-dark group-hover:text-golden transition-colors">
           {info.title}
         </h3>
-        <p className="text-base text-dark/90 dark:text-gray-300 group-hover:scale-[1.02] transition-transform">
+        <p className="text-base text-dark/90 group-hover:scale-[1.02] transition-transform">
           {info.value}
         </p>
       </div>
 
       {/* CTA button */}
-      <div className="mt-4 px-5 py-2 bg-golden/10 border border-golden/30 rounded-full text-golden dark:text-lightyellow font-medium group-hover:bg-golden group-hover:text-white transition-colors">
+      <div className="mt-4 px-5 py-2 bg-golden/10 border border-golden/30 rounded-full text-golden font-medium group-hover:bg-golden group-hover:text-white transition-colors">
         {info.cta}
       </div>
 

@@ -25,7 +25,7 @@ const PreConstruction = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true, margin: "-100px" }}
-        className="px-6 py-12 bg-white dark:bg-gray-900"
+        className="px-6 py-12 bg-white"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -48,7 +48,7 @@ const PreConstruction = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true, margin: "-100px" }}
-        className="px-4 md:px-8 pb-16"
+        className="bg-white px-4 md:px-8 pb-16"
       >
         <div className="w-full mx-auto">
           {/* <FilterPossesions community={community} /> */}
