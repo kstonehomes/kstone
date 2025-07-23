@@ -756,10 +756,10 @@ export const PropertyUI = ({ slug, propertyState }: PropertyUIProps) => {
 
       {/* Video Tour Section */}
       {property.videoTour && (
-        <section className="w-full bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-16 md:py-20">
+        <section className="w-full bg-gradient-to-b from-gray-50 to-gray-100 py-16 md:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Virtual Tour
               </h2>
               <div className="w-42 h-1 bg-gradient-to-r from-golden via-amber-400 to-black/10 mx-auto rounded-full" />
@@ -797,7 +797,7 @@ export const PropertyUI = ({ slug, propertyState }: PropertyUIProps) => {
             </div>
 
             {/* Optional caption */}
-            <p className="mt-6 text-center text-gray-500 dark:text-gray-400 text-sm">
+            <p className="mt-6 text-center text-gray-500 text-sm">
               Click play to experience this home in 360°
             </p>
           </div>
