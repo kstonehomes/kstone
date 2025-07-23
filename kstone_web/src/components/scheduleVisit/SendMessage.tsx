@@ -444,7 +444,7 @@ const TextArea = ({
       onChange={onChange}
       rows={rows}
       className={`
-        w-full px-4 py-3 border-2 text-sm sm:text-base
+        w-full px-4 py-3 border-2 text-gray-700 text-sm sm:text-base
         ${error ? "border-red-500" : "border-golden"}
         focus:ring-2 focus:ring-blue-400 focus:border-transparent 
         bg-white/90 transition-all outline-none
