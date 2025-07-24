@@ -13,7 +13,7 @@ type FormData = {
   message: string;
 };
 
-const SendMessage = () => {
+const SendMessage = ({ greetings }: { greetings: string | "" }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,7 +22,9 @@ const SendMessage = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
+    null
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validateForm = () => {
@@ -47,7 +49,9 @@ const SendMessage = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -102,11 +106,14 @@ const SendMessage = () => {
   return (
     <div className="w-full">
       {submitStatus === "success" ? (
-        <SuccessMessage formData={formData} onReset={() => setSubmitStatus(null)} />
+        <SuccessMessage
+          formData={formData}
+          onReset={() => setSubmitStatus(null)}
+        />
       ) : submitStatus === "error" ? (
-        <ErrorMessage 
-          onRetry={() => setSubmitStatus(null)} 
-          contactEmail="info@kstonehomes.com" 
+        <ErrorMessage
+          onRetry={() => setSubmitStatus(null)}
+          contactEmail="info@kstonehomes.com"
           contactPhone="780-254-4000"
         />
       ) : (
@@ -116,6 +123,12 @@ const SendMessage = () => {
           className=""
         >
           <form onSubmit={handleSubmit} noValidate className="space-y-6">
+            {greetings && greetings.length > 0 ? (
+              <p className="greetings text-green-600 font-semibold text-lg -mt-3">
+                {greetings}
+              </p>
+            ) : null}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <InputField
                 type="text"
@@ -184,7 +197,13 @@ const SendMessage = () => {
   );
 };
 
-const SuccessMessage = ({ formData, onReset }: { formData: FormData; onReset: () => void }) => (
+const SuccessMessage = ({
+  formData,
+  onReset,
+}: {
+  formData: FormData;
+  onReset: () => void;
+}) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.9 }}
     animate={{ opacity: 1, scale: 1 }}
@@ -192,9 +211,9 @@ const SuccessMessage = ({ formData, onReset }: { formData: FormData; onReset: ()
     className="bg-white dark:bg-[var(--color-dark)] p-8 border-2 border-[var(--color-golden)]/30 rounded-xl shadow-lg text-center max-w-md mx-auto"
   >
     <motion.div
-      animate={{ 
+      animate={{
         scale: [1, 1.1, 1],
-        rotate: [0, 5, -5, 0]
+        rotate: [0, 5, -5, 0],
       }}
       transition={{ duration: 0.8 }}
       className="mx-auto w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-6"
@@ -217,7 +236,8 @@ const SuccessMessage = ({ formData, onReset }: { formData: FormData; onReset: ()
       Thank You!
     </h3>
     <p className="text-[var(--color-dark)]/80 dark:text-gray-300 mb-6">
-      We&apos;ve received your message and will contact you via {formData.contactPreferences || 'email'} shortly.
+      We&apos;ve received your message and will contact you via{" "}
+      {formData.contactPreferences || "email"} shortly.
     </p>
     <motion.button
       onClick={onReset}
@@ -231,11 +251,11 @@ const SuccessMessage = ({ formData, onReset }: { formData: FormData; onReset: ()
 );
 
 // Error Message Component
-const ErrorMessage = ({ 
-  onRetry, 
-  contactEmail, 
-  contactPhone 
-}: { 
+const ErrorMessage = ({
+  onRetry,
+  contactEmail,
+  contactPhone,
+}: {
   onRetry: () => void;
   contactEmail: string;
   contactPhone: string;
@@ -247,9 +267,9 @@ const ErrorMessage = ({
     className="bg-white dark:bg-[var(--color-dark)] p-8 border-2 border-red-300 dark:border-red-700/50 rounded-xl shadow-lg text-center max-w-md mx-auto"
   >
     <motion.div
-      animate={{ 
+      animate={{
         scale: [1, 1.1, 1],
-        x: [-5, 5, -5, 0]
+        x: [-5, 5, -5, 0],
       }}
       transition={{ duration: 0.8 }}
       className="mx-auto w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-6"
@@ -272,9 +292,10 @@ const ErrorMessage = ({
       Submission Error
     </h3>
     <p className="text-[var(--color-dark)]/80 dark:text-gray-300 mb-6">
-      We couldn&apos;t send your message. Please try again or contact us directly.
+      We couldn&apos;t send your message. Please try again or contact us
+      directly.
     </p>
-    
+
     <div className="flex flex-col gap-3">
       <motion.button
         onClick={onRetry}
@@ -284,7 +305,7 @@ const ErrorMessage = ({
       >
         Try Again
       </motion.button>
-      
+
       <div className="flex gap-3">
         <motion.a
           href={`mailto:${contactEmail}`}
@@ -306,7 +327,6 @@ const ErrorMessage = ({
     </div>
   </motion.div>
 );
-
 
 // Enhanced Input Component with error handling
 const InputField = ({
@@ -544,6 +564,5 @@ const Spinner = () => (
     ></path>
   </svg>
 );
-
 
 export default SendMessage;

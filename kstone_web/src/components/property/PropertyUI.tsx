@@ -420,33 +420,39 @@ export const PropertyUI = ({ slug, propertyState }: PropertyUIProps) => {
       icon: <FaRulerCombined className="w-full h-full text-golden" />,
       value: property.allFeatures?.sqft
         ? `${property.allFeatures?.sqft.toLocaleString()}`
-        : "—",
+        : "N/A",
       label: "Total SQFT",
     },
     {
       icon: <FiHome className="w-full h-full text-golden" />,
-      value: property.allFeatures?.mainHouseSqft,
+      value: property.allFeatures?.mainHouseSqft
+        ? property.allFeatures?.mainHouseSqft
+        : "N/A",
       label: "Main House SQFT",
     },
     {
       icon: <GiStairs className="w-full h-full text-golden" />,
-      value: property.allFeatures?.basementSqft,
+      value: property.allFeatures?.basementSqft
+        ? property.allFeatures?.basementSqft
+        : "N/A",
       label: "Basement SQFT",
     },
 
     {
       icon: <GiHomeGarage className="w-full h-full text-golden" />,
-      value: property.houseType,
+      value: property.allFeatures.garageSuiteSqft
+        ? property.allFeatures?.garageSuiteSqft
+        : "N/A",
       label: "Garage Suite SQFT",
     },
     {
       icon: <FaBed className="w-full h-full text-golden" />,
-      value: property.allFeatures?.bedrooms,
+      value: property.allFeatures?.bedrooms? property.allFeatures?.bedrooms.toLocaleString() : "N/A",
       label: "Total Bedrooms",
     },
     {
       icon: <FaBath className="w-full h-full text-golden" />,
-      value: property.allFeatures?.bathrooms,
+      value: property.allFeatures?.bathrooms? property.allFeatures?.bathrooms.toLocaleString() : "N/A",
       label: "Total Bathrooms",
     },
   ];
@@ -475,15 +481,16 @@ export const PropertyUI = ({ slug, propertyState }: PropertyUIProps) => {
                 priority
               />
 
-              {propertyState === "quickPossession" && (
-                <>
-                  <StatusBadge status={property.status || ""} />
-                  <PriceTag
-                    oldPrice={property.oldPrice}
-                    newPrice={property.newPrice}
-                  />
-                </>
-              )}
+              {propertyState === "quickPossession" &&
+                property.newPrice &&(
+                  <>
+                    <StatusBadge status={property.status || ""} />
+                    <PriceTag
+                      oldPrice={property.oldPrice}
+                      newPrice={property.newPrice}
+                    />
+                  </>
+                )}
             </div>
 
             {/* Property Info */}
@@ -615,55 +622,57 @@ export const PropertyUI = ({ slug, propertyState }: PropertyUIProps) => {
             )}
           </div>
           {/* Floor Plans */}
-          {property.floorPlans && property.floorPlans.length > 0 && (
-            <motion.section
-              className="mb-12"
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.25 }}
-              variants={staggerContainer()}
-            >
-              <motion.h2
-                className="text-2xl font-bold text-gray-900"
-                variants={fadeIn("up", "tween", 0.1, 0.5)}
+          {property.floorPlans &&
+            property.floorPlans.length > 0 &&
+            property.propertyState !== "showhome" && (
+              <motion.section
+                className="mb-12"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.25 }}
+                variants={staggerContainer()}
               >
-                Floor Plans
-              </motion.h2>
+                <motion.h2
+                  className="text-2xl font-bold text-gray-900"
+                  variants={fadeIn("up", "tween", 0.1, 0.5)}
+                >
+                  Floor Plans
+                </motion.h2>
 
-              <motion.div variants={fadeIn("up", "tween", 0.2, 0.5)}>
-                <HR />
-              </motion.div>
+                <motion.div variants={fadeIn("up", "tween", 0.2, 0.5)}>
+                  <HR />
+                </motion.div>
 
-              <motion.div
-                className="grid md:grid-cols-2 gap-6 mt-8"
-                variants={staggerContainer(0.1, 0.2)}
-              >
-                {property.floorPlans.map((floor, index) => (
-                  <motion.div
-                    key={index}
-                    className="bg-white p-4 rounded-lg shadow-sm border border-golden hover:shadow-md transition-shadow duration-300"
-                    variants={fadeIn("up", "tween", index * 0.1, 0.5)}
-                    whileHover={{ y: -5 }}
-                  >
-                    <h3 className="text-lg font-semibold text-golden mb-3">
-                      {floor.floor}
-                    </h3>
+                <motion.div
+                  className="grid md:grid-cols-2 gap-6 mt-8"
+                  variants={staggerContainer(0.1, 0.2)}
+                >
+                  {property.floorPlans.map((floor, index) => (
                     <motion.div
-                      className="aspect-[4/3] relative overflow-hidden rounded-md"
-                      whileTap={{ scale: 0.95 }}
+                      key={index}
+                      className="bg-white p-4 rounded-lg shadow-sm border border-golden hover:shadow-md transition-shadow duration-300"
+                      variants={fadeIn("up", "tween", index * 0.1, 0.5)}
+                      whileHover={{ y: -5 }}
                     >
-                      <Image
-                        src={floor.image}
-                        alt={`${floor.floor} plan`}
-                        fill
-                        className="object-contain hover:scale-105 transition-transform duration-500"
-                      />
+                      <h3 className="text-lg font-semibold text-golden mb-3">
+                        {floor.floor}
+                      </h3>
+                      <motion.div
+                        className="aspect-[4/3] relative overflow-hidden rounded-md"
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Image
+                          src={floor.image}
+                          alt={`${floor.floor} plan`}
+                          fill
+                          className="object-contain hover:scale-105 transition-transform duration-500"
+                        />
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.section>
-          )}
+                  ))}
+                </motion.div>
+              </motion.section>
+            )}
 
           {/* Additional Features */}
           {property.additionalFeatures &&
@@ -810,7 +819,10 @@ export const PropertyUI = ({ slug, propertyState }: PropertyUIProps) => {
       {/* Schedule Visit Popup */}
       <AnimatePresence>
         {showPopup && (
-          <ScheduleVisitPopup onClose={() => setShowPopup(false)} />
+          <ScheduleVisitPopup
+            onClose={() => setShowPopup(false)}
+            greetings={`Thanks For Showing Interest In ${property.houseName},(${property.address})`}
+          />
         )}
       </AnimatePresence>
     </div>

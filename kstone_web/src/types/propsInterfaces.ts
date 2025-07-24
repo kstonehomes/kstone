@@ -94,7 +94,7 @@ export interface Property {
   readyStatus?: string;
   availableStatus?: string;
   oldPrice?: number;
-  newPrice: number;
+  newPrice?: number;
   houseGallery: Array<{
     url: string;
     alt?: string | undefined;
@@ -104,14 +104,14 @@ export interface Property {
     floor: string;
     image: string;
   }>;
-  garage: string;
+  garage?: string;
   allFeatures: {
-    sqft: string;
-    mainHouseSqft: string;
-    basementSqft: string;
-    garageSuiteSqft: string;
-    bedrooms: string;
-    bathrooms: string;
+    sqft?: string;
+    mainHouseSqft?: string;
+    basementSqft?: string;
+    garageSuiteSqft?: string;
+    bedrooms?: string;
+    bathrooms?: string;
     kitchen?: number;
     spiceKitchen?: boolean;
     spiceKitchenTotal?: string;

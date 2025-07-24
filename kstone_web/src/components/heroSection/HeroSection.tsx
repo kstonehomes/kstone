@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiOutlineHome } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
-import { useRef } from "react";
+import React, { useRef } from "react";
 
 const HeroSection = ({
   heading,
@@ -114,31 +114,42 @@ const HeroSection = ({
           animate="visible"
           variants={containerVariants}
         >
-          {/* Breadcrumb with better stagger */}
-          <motion.div className="max-w-4xl">
-            <nav className="flex items-center gap-2 mb-6 text-lg text-gray-400 font-medium">
+          {/* Breadcrumb with responsive truncation */}
+          <motion.div className="max-w-4xl overflow-hidden">
+            <nav className="flex items-center gap-2 mb-6 text-lg text-gray-400 font-medium whitespace-nowrap overflow-x-auto">
               {items.map((item, index) => {
                 const isHome = item === "";
+                const isLast = index === items.length - 1;
                 const href = "/" + items.slice(1, index + 1).join("/");
 
                 return (
-                  <motion.li
-                    key={index}
-                    className="flex items-center gap-2"
-                    variants={itemVariants}
-                    custom={index}
-                  >
-                    {isHome ? <AiOutlineHome size={16} /> : null}
-                    <Link
-                      href={isHome ? "/" : href}
-                      className={`capitalize ${
-                        index === items.length - 1 ? "text-offwhite" : ""
+                  <React.Fragment key={index}>
+                    <motion.li
+                      className={`flex-shrink-0 flex items-center gap-2 ${
+                        !isLast ? "max-w-[120px] truncate" : ""
                       }`}
+                      variants={itemVariants}
+                      custom={index}
                     >
-                      {isHome ? "Home" : item}
-                    </Link>
-                    {index < items.length - 1 ? <IoIosArrowForward /> : null}
-                  </motion.li>
+                      {isHome ? <AiOutlineHome size={16} /> : null}
+                      <Link
+                        href={isHome ? "/" : href}
+                        className={`capitalize ${isLast ? "text-offwhite" : ""}`}
+                      >
+                        {isHome ? "Home" : item}
+                      </Link>
+                    </motion.li>
+                    {/* Add arrow after every item except the last one */}
+                    {!isLast && (
+                      <motion.span
+                        className="flex-shrink-0"
+                        variants={itemVariants}
+                        custom={index}
+                      >
+                        <IoIosArrowForward />
+                      </motion.span>
+                    )}
+                  </React.Fragment>
                 );
               })}
             </nav>

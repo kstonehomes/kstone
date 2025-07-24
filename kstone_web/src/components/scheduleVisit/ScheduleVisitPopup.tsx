@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import SendMessage from "./SendMessage"; // Adjust the import path as needed
 
-const ScheduleVisitPopup = ({ onClose }: { onClose: () => void }) => {
+const ScheduleVisitPopup = ({ onClose, greetings }: { onClose: () => void, greetings: string }) => {
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
     null
   );
@@ -110,7 +110,7 @@ const ScheduleVisitPopup = ({ onClose }: { onClose: () => void }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         className={`
-          bg-[var(--color-offwhite)] shadow-xl w-full max-w-2xl
+          bg-[var(--color-offwhite)] shadow-xl w-full max-w-3xl
           rounded-xl overflow-hidden
           border border-[var(--color-golden)]/30
           flex flex-col
@@ -157,7 +157,7 @@ const ScheduleVisitPopup = ({ onClose }: { onClose: () => void }) => {
               onClose={onClose}
             />
           ) : (
-            <SendMessage />
+            <SendMessage greetings={greetings} />
           )}
         </div>
       </motion.div>
