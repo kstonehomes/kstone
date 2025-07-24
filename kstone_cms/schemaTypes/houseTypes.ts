@@ -4,35 +4,49 @@ export const houseTypeField = defineField({
   name: 'houseType',
   title: 'House Type',
   type: 'string',
-  description: 'Select the type of the house (e.g., Front-Drive Home, Landed Home).',
+  description: 'Select the primary type of the property',
   validation: (Rule) => Rule.required(),
   options: {
     list: [
-      {title: '4PLEX', value: '4PLEX'},
-      {title: 'Apartment High Rise', value: 'Apartment High Rise'},
-      {title: 'Carriage', value: 'Carriage'},
-      {title: 'Cottage', value: 'Cottage'},
-      {title: 'Detached Condominium', value: 'Detached Condominium'},
+      // Single Family Homes (Most Common)
       {title: 'Detached Single Family', value: 'Detached Single Family'},
-      {title: 'Duplex Front and Back', value: 'Duplex Front and Back'},
-      {title: 'Duplex Side By Side', value: 'Duplex Side By Side'},
-      {title: 'Duplex Up And Down', value: 'Duplex Up And Down'},
-      {title: 'Double Rear Detach Garage', value: 'Double Rear Detach Garage'},
-      {title: 'Double Front Attach Garage', value: 'Double Front Attach Garage'},
-      {title: 'Half Duplex', value: 'Half Duplex'},
-      {title: 'Lowrise Apartment', value: 'Lowrise Apartment'},
-      {title: 'Parking Stall', value: 'Parking Stall'},
-      {title: 'Residential Attached', value: 'Residential Attached'},
-      {title: 'Stacked Townhouse', value: 'Stacked Townhouse'},
+      {title: 'Front Garage Home', value: 'Front Garage Home'},
+      {title: 'Rear Lane Home', value: 'Rear Lane Home'},
+      {title: 'Bungalow', value: 'Bungalow'},
+      {title: 'Two-Storey Home', value: 'Two-Storey Home'},
+
+      // Condominiums
+      {title: 'Apartment (High-Rise)', value: 'Apartment High Rise'},
+      {title: 'Apartment (Low-Rise)', value: 'Apartment Low Rise'},
+      {title: 'Detached Condominium', value: 'Detached Condominium'},
+      {title: 'Loft Condo', value: 'Loft Condo'},
+
+      // Townhouses
       {title: 'Townhouse', value: 'Townhouse'},
-      {title: 'Tri-Plex', value: 'Tri-Plex'},
+      {title: 'Stacked Townhouse', value: 'Stacked Townhouse'},
+      {title: 'Row House', value: 'Row House'},
+
+      // Multi-Unit (Popular for Investors)
+      {title: 'Duplex', value: 'Duplex'},
+      {title: 'Triplex', value: 'Triplex'},
+      {title: 'Fourplex (4PLEX)', value: '4PLEX'},
+      {title: 'Semi-Detached', value: 'Semi-Detached'},
+
+      // Specialty Homes
+      {title: 'Cottage', value: 'Cottage'},
+      {title: 'Carriage Home', value: 'Carriage Home'},
+      {title: 'Laneway Home', value: 'Laneway Home'},
+      {title: 'Modular Home', value: 'Modular Home'},
+
+      // Land/Vacant
       {title: 'Vacant Lot/Land', value: 'Vacant Lot/Land'},
-      {title: 'Front Single Garage Home', value: 'Front Single Garage Home'},
-      {title: 'Rear Single Garage Home', value: 'Rear Single Garage Home'},
-      {title: 'Front Tripe Garage Home', value: 'Front Tripe Garage Home'},
-      {title: 'Rear Triple Garage Home', value: 'Rear Triple Garage Home'},
-      {title: 'Front Quadruple Garage Home', value: 'Front Quadruple Garage Home'},
-      {title: 'Rear Quadruple Garage Home', value: 'Rear Quadruple Garage Home'},
+      {title: 'Acreage', value: 'Acreage'},
+
+      // Regional Specialties
+      {title: 'Vancouver Special', value: 'Vancouver Special'},
+      {title: 'Ontario Cottage', value: 'Ontario Cottage'},
+      {title: 'Quebec Triplex', value: 'Quebec Triplex'},
+      {title: 'Prairie Bungalow', value: 'Prairie Bungalow'},
     ],
     layout: 'dropdown',
   },

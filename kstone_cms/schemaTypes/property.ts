@@ -1,7 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {allFeaturesField} from './allFeature'
 import {garageField} from './garages'
-import { houseTypeField } from './houseTypes'
+import {houseTypeField} from './houseTypes'
 
 export const property = defineType({
   name: 'property',
@@ -113,13 +113,14 @@ export const property = defineType({
       title: 'Province',
       type: 'string',
       description: 'The province or state where the home is located.',
-      validation: (Rule) => Rule.custom((value, context) => {
-        const parent = (context as {parent?: {propertyState?: string}}).parent
-        if (parent?.propertyState === 'showhome' && !value) {
-          return 'Province is required for showhome.'
-        }
-        return true
-      }),
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const parent = (context as {parent?: {propertyState?: string}}).parent
+          if (parent?.propertyState === 'showhome' && !value) {
+            return 'Province is required for showhome.'
+          }
+          return true
+        }),
       hidden: ({parent}) => parent.propertyState !== 'showhome',
     }),
     defineField({
@@ -202,7 +203,6 @@ export const property = defineType({
       name: 'newPrice',
       title: 'New Price',
       type: 'number',
-      validation: (Rule) => Rule.required(),
     }),
 
     // Gallery
@@ -242,15 +242,21 @@ export const property = defineType({
               type: 'string',
               options: {
                 list: [
-                  {title: 'Main Floor', value: 'Main Floor'},
-                  {title: 'Second Floor', value: 'Second Floor'},
-                  {title: 'Carpeted Floor', value: 'Carpeted Floor'},
-                  {title: 'Basement', value: 'Basement'},
-                  {title: 'Garage Suite', value: 'Garage Suite'},
-                  {title: 'Front Elevation', value: 'Front Elevation'},
-                  {title: 'Rear Elevation', value: 'Rear Elevation'},
-                  {title: 'Left Elevation', value: 'Left Elevation'},
-                  {title: 'Right Elevation', value: 'Right Elevation'},
+                  {title: 'Main Floor', value: 'main-floor'},
+                  {title: 'Upper Floor', value: 'upper-floor'},
+                  {title: 'Lower Floor', value: 'lower-floor'},
+                  {title: 'Basement', value: 'basement'},
+                  {title: 'Walkout Basement', value: 'walkout-basement'},
+                  {title: 'Garage Suite', value: 'garage-suite'},
+                  {title: 'Garden Suite', value: 'garden-suite'},
+                  {title: 'Laneway House', value: 'laneway-house'},
+                  {title: 'Front Elevation', value: 'front-elevation'},
+                  {title: 'Rear Elevation', value: 'rear-elevation'},
+                  {title: 'Left Side Elevation', value: 'left-elevation'},
+                  {title: 'Right Side Elevation', value: 'right-elevation'},
+                  {title: 'Roof Plan', value: 'roof-plan'},
+                  {title: 'Foundation Plan', value: 'foundation-plan'},
+                  {title: 'Cross Section', value: 'cross-section'},
                 ],
                 layout: 'dropdown',
               },
@@ -266,10 +272,6 @@ export const property = defineType({
           ],
         },
       ],
-      validation: (Rule) =>
-        Rule.required()
-          .min(2)
-          .error('You must provide images for at least two floor, up to four floors.'),
       description: 'Add floor plans for up to 4 floors, each with its own images.',
       hidden: ({parent}) => parent.propertyState === 'showhome',
     }),
@@ -283,16 +285,43 @@ export const property = defineType({
       title: 'Additional Features',
       type: 'array',
       of: [{type: 'string'}],
+      description: 'List of sentences describing the property features.',
+      validation: (Rule) =>
+        Rule.custom((array) => {
+          // If field is not set, skip validation (optional)
+          if (!array) return true
 
-      description: 'List of sentences that describe the additional features of the property.',
+          // Check for empty strings ("" or whitespace-only)
+          const hasEmptyItems = array.some((item) => typeof item !== 'string' || !item.trim())
+
+          if (hasEmptyItems) {
+            return 'Cannot have empty items. Please fill in or remove them.'
+          }
+
+          return true
+        }),
     }),
+
     defineField({
       name: 'upgrades',
       title: 'Upgrades',
       type: 'array',
       of: [{type: 'string'}],
-
       description: 'List of sentences that describe the additional upgrades of the property.',
+      validation: (Rule) =>
+        Rule.custom((array) => {
+          // If field is not set, skip validation (optional)
+          if (!array) return true
+
+          // Check for empty strings ("" or whitespace-only)
+          const hasEmptyItems = array.some((item) => typeof item !== 'string' || !item.trim())
+
+          if (hasEmptyItems) {
+            return 'Cannot have empty items. Please fill in or remove them.'
+          }
+
+          return true
+        }),
     }),
 
     // Downloadable Floor Plan
