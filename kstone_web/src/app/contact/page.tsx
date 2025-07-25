@@ -74,7 +74,7 @@ const Contact = () => {
           <h2 className="text-2xl font-bold text-golden mb-6">
             Have any Question?
           </h2>
-          <SendMessage />
+          <SendMessage greetings={""} />
         </motion.div>
       </LazyMotion>
     </div>

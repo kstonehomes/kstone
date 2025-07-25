@@ -70,7 +70,7 @@ const CTA = () => {
       {/* Schedule Visit Popup - shown only when button is clicked */}
       <AnimatePresence>
         {showPopup && (
-          <ScheduleVisit onClose={() => setShowPopup(false)} />
+          <ScheduleVisit onClose={() => setShowPopup(false)} greetings=""/>
         )}
       </AnimatePresence>
     </>
