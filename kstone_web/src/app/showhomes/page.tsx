@@ -15,7 +15,6 @@ const ShowHome = () => {
   const [data, setData] = useState<ShowHomeProps[]>([]);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     const filters = ['_type == "showHome"', '!(_id in path("drafts.**"))'];
     const params: Record<string, string> = {};
@@ -112,43 +111,42 @@ const ShowHome = () => {
 
   return (
     <main className="">
-
-       <PageHeader
-                title="showhomes"
-                subtitle="Explore our stunning collection of luxury homes and architectural masterpieces"
-                backgroundImage="/images/ks-showhomes.jpg"
-                breadcrumbs={[
-                  { label: "Home", href: "/" },
-                  { label: "showhomes" }
-                ]}
-              /> 
+      <PageHeader
+        title="showhomes"
+        subtitle="Explore our stunning collection of luxury homes and architectural masterpieces"
+        backgroundImage="/images/ks-showhomes.jpg"
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "showhomes" }]}
+      />
       <section className="">
-          <div className="container">
-            <div className="filter mb-10">
-             <FilterByCommunity community={community} setCommunity={setCommunity} />
-            </div>
-            <div className="list">
-            {loading ? (
-            <Loader />
-          ) : data.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8  mx-auto">
-              {data.map((item) => (
-                <ShowhomesCard key={item._id} item={item} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center text-secondary dark:text-gray-300 py-16">
-              <p className="text-lg font-display">
-                No quick possessions available for{" "}
-                <span className="font-semibold text-primary">
-                  {community || city || "this selection"}
-                </span>
-              </p>
-            </div>
-          )}
-            </div>
+        <div className="container">
+          <div className="filter mb-10">
+            <FilterByCommunity
+              community={community}
+              setCommunity={setCommunity}
+            />
           </div>
-        </section>
+          <div className="list">
+            {loading ? (
+              <Loader />
+            ) : data.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8  mx-auto">
+                {data.map((item) => (
+                  <ShowhomesCard key={item._id} item={item} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-secondary dark:text-gray-300 py-16">
+                <p className="text-lg font-display">
+                  No quick possessions available for{" "}
+                  <span className="font-semibold text-primary">
+                    {community || city || "this selection"}
+                  </span>
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
     </main>
   );
 };

@@ -186,7 +186,7 @@ export default async function PreConstructionPage({ params }: Params) {
     <main className="bg-white">
       <PageHeader
         title={propertyData.houseModel}
-        subtitle={propertyData.community?.name}
+        subtitle={propertyData.houseType || "Pre-Construction Home"}
         backgroundImage="/images/ks-quickpossession.jpg"
         breadcrumbs={[
           { label: "Home", href: "/" },

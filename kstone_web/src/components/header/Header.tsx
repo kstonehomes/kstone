@@ -344,11 +344,11 @@ const Header: React.FC = () => {
 
               <div className="p-6 border-t border-gray-500 flex-shrink-0">
                 <Link
-                  href="tel:17802772277"
+                  href="+1 (780) 254-4000"
                   className="w-full bg-primary text-offwhite text-center px-6 py-3 font-display font-medium hover:bg-primary/90 transition-colors duration-200 flex items-center justify-center gap-2 rounded-md"
                 >
                   <FaPhone size={16} />
-                  +1 (780) 2772277
+                  +1 (780) 254-4000
                 </Link>
               </div>
             </motion.div>
@@ -358,7 +358,7 @@ const Header: React.FC = () => {
 
       {/* Call Button Mobile */}
       <Link
-        href="tel:17802772277"
+        href="tel:+1 (780) 254-4000"
         className={`flex lg:hidden fixed bottom-28 right-3 rounded-full p-2 z-50 bg-green-600! btn btn-cta ${
           scrolled ? "btn-primary" : "bg-white/10 text-white hover:bg-primary"
         }`}
@@ -366,7 +366,7 @@ const Header: React.FC = () => {
         <span className="btn-icon">
           <FaPhoneVolume size={20} />
         </span>
-        <span className="hidden">+1 (780) 2772277</span>
+        <span className="hidden">+1 (780) 254-4000</span>
       </Link>
     </>
   );

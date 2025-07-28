@@ -128,8 +128,8 @@ const Contact = () => {
                 {
                   icon: GiRotaryPhone,
                   title: "Call Now",
-                  value: "+1 (780) 277-2277",
-                  href: "tel:17802772277",
+                  value: "+1 (780)-254-4000",
+                  href: "tel:780-254-4000",
                   description: "Speak with our sales team",
                 },
                 {

@@ -202,7 +202,7 @@ export default async function QuickPossessionPage({ params }: Params) {
     <main className="bg-white">
       <PageHeader
         title={possession.houseModel}
-        subtitle={possession.community?.name}
+        subtitle={possession.houseType || "Quick Possession Home"}
         backgroundImage="/images/ks-quickpossession.jpg"
         breadcrumbs={[
           { label: "Home", href: "/" },

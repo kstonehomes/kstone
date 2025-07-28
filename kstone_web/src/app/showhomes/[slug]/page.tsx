@@ -215,7 +215,7 @@ console.log("Fetched home data:", home);
     <main className="">
       <PageHeader
         title={home.houseModel}
-        subtitle={home.community?.name || "Show Home"}
+        subtitle={home.houseType || "Show Home"}
         backgroundImage="/images/ks-showhomes.jpg"
         breadcrumbs={[
           { label: "Home", href: "/" },
