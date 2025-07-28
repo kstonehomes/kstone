@@ -1,42 +1,132 @@
 @import "tailwindcss";
-@tailwind utilities;
-
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme {
-  --breakpoint-esm: 480px;
-  --color-golden: #da9b26;
-  --color-lightyellow: #d9a92d;
-  --color-dark: #292f29;
-  --color-darkgray: #222325;
   --color-offwhite: #efefef;
+  --color-primary: #94792f;
+  --color-primary-bg: #fbf6ea;
+  --color-secondary: #1b3942;
+  --color-secondary-dark: #102227;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-base: var(--font-inter);
+  --font-montserrat: var(--font-montserrat);
+  --font-roboto: var(--font-roboto);
+  --font-italiana: var(--font-italiana);
+  --font-alegreya: var(--font-alegreya);
+  --color-offwhite: var(--color-offwhite);
+  --color-primary: var(--color-primary);
+  --color-primary-bg: var(--color-primary-bg);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-dark: var(--color-secondary-dark);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base{
+  body{
+    @apply font-base
+  }
+  .container{
+    @apply mx-auto px-4 md:px-8 max-w-[96rem]! md:max-w-[87rem] lg:max-w-[96rem]
   }
 }
+@layer components{
+  h1,h2,h3,h4,h5,h6{
+    @apply font-roboto
+  }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Inter", sans-serif;
-}
+  h1{
+    @apply font-alegreya
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
+  h2{
+    @apply font-alegreya
+  }
+
+  h2.title{
+    @apply font-italiana text-4xl lg:text-5xl font-semibold text-primary leading-tight capitalize
+  }
+  /* h2.title > span{
+    @apply font-bold text-secondary
+  } */
+   h3.title{
+    @apply font-montserrat text-2xl lg:text-3xl font-semibold text-secondary leading-tight capitalize 
+   }
+   h3.title > .line{
+    @apply w-24 h-1 bg-gradient-to-r from-primary to-primary/50 mt-2 mb-6
+   }
+   h2.title > .line{
+    @apply w-24 max-w-36 h-1 bg-gradient-to-r from-primary to-primary/50 mt-2 mb-6
+   }
+  p.content{
+    @apply font-roboto text-secondary text-lg leading-relaxed
+  }
+  button{
+    @apply font-montserrat cursor-pointer
+  }
+  .btn{
+    @apply text-lg px-7 py-4 font-montserrat border border-transparent font-medium transition-all hover:scale-105 duration-200 flex items-center m-0 gap-2
+  }
+  .btn.btn-primary{
+    @apply bg-primary text-white hover:bg-primary/70 hover:scale-105
+  }
+  .btn.btn-outline{
+    @apply bg-transparent border-primary text-primary hover:bg-primary/70 hover:text-white
+  }
+  .btn.btn-cta > .btn-icon{
+    @apply bg-gray-50/30 rounded-full p-2
+  }
+  .btn.btn-download{
+    @apply flex border-2 border-secondary text-secondary bg-transparent cursor-pointer hover:text-white  hover:bg-secondary font-semibold justify-center items-center gap-2  transition-all duration-300 hover:shadow-lg
+  }
+  input,select,textarea{
+    @apply placeholder:text-secondary-dark rounded-none! border-primary!
+  }
+  label{
+    @apply hidden! 
+  }
+
+  /* sections */
+  .page-header{
+    @apply mt-[95px] md:mt-[74px]
+  }
+  section{
+    @apply py-10 md:py-20
+  }
+
+  /* Property Single Page */
+  .property-features-grid{
+    @apply grid grid-cols-2 md:grid-cols-3 gap-2 mb-8 capitalize;
+  }
+  .property-features-col{
+    @apply text-center p-2 md:p-6 bg-primary-bg border border-primary flex md:flex-row flex-col justify-center h-full items-center gap-5;
+  }
+  .property-features-icon{
+    @apply text-primary text-4xl;
+  }
+  .property-features-content{
+    @apply text-center md:text-left;
+  }
+  .property-features-title{
+    @apply font-montserrat font-bold text-xl text-secondary;
+  }
+  .property-features-label{
+    @apply text-base font-medium text-gray-500 capitalize;
+  }
+  /* Additional Features Grid */
+  .property-additional-features-grid{
+    @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8;
+  }
+  .property-additional-features-col{
+    @apply text-center flex-col justify-center items-center gap-4 p-4 bg-primary-bg  border border-primary relative shadow hover:shadow-md transition-all;
+  }
+  .property-additional-features-icon{
+    @apply text-primary text-4xl flex justify-center mb-2;
+  }
+  .property-additional-features-label{
+    @apply text-secondary font-montserrat font-semibold text-sm;
+  }
+  .property-additional-features-checkmark{
+    @apply text-primary absolute top-2 right-2;
+  }
+
 }

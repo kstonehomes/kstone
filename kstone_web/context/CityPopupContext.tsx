@@ -20,7 +20,7 @@ export const CityPopupProvider = ({
 }) => {
   const [isCityOpen, setCityOpen] = useState<boolean>(false);
 
-  return (
+  return ( 
     <CityPopupContext.Provider value={{ isCityOpen, setCityOpen }}>
       {children}
     </CityPopupContext.Provider>

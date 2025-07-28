@@ -1,16 +1,14 @@
-
-import { groq } from "next-sanity";
+import PageHeader from "@/components/PageHeader";
+import GalleryGrid from "@/components/GalleryGrid";
 import { client } from "@/sanity/client";
-import HeroSection from "@/components/heroSection/HeroSection";
-import CTA from "@/components/CTA/CTA";
-import GalleryClient from "@/components/galleryClient/GalleryClient";
-const ksGallery = "/images/ks-gallery.jpg";
+import { groq } from "next-sanity";
 
 const query = groq`
-  *[_type == "gallery"] {
+  *[_type == "gallery"][0]{
     _id,
     title,
-    image {
+    images[]{
+      altText,
       asset->{
         _id,
         url,
@@ -21,44 +19,65 @@ const query = groq`
             aspectRatio
           }
         }
-      }
-    },
-    altText,
-    "slug": slug.current
+      },
+      hotspot,
+      crop
+    }
   }
 `;
 
-export default async function GalleryPage() {
-  const galleryItems = await client.fetch(query);
+type GalleryImage = {
+  altText?: string;
+  asset?: {
+    _id: string;
+    url: string;
+    metadata?: {
+      dimensions?: {
+        width: number;
+        height: number;
+        aspectRatio: number;
+      };
+    };
+  };
+  hotspot?: string;
+  crop?: string;
+};
+
+export const revalidate = 60; // Revalidate every 60 seconds
+
+export default async function Gallery() {
+  const gallery = await client.fetch(query);
+  const images: GalleryImage[] = gallery?.images ?? [];
+  console.log("Gallery images:", images);
+  
 
   return (
-    <div className="bg-white">
-      {/* Hero Banner */}
-      <HeroSection
-        heading="Design Gallery"
-        paragraph="Explore our portfolio of exceptional craftsmanship"
-        imageUrl={ksGallery}
+    <main className="">
+      {/* Banner Section */}
+      <PageHeader
+        title="gallery"
+        subtitle=""
+        backgroundImage="/images/ks-gallery.jpg"
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "gallery" }]}
       />
 
-      {/* Gallery Intro */}
-      <section className="py-12 ">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-golden dark:text-amber-400 mb-4">
-            Modern Design Showcase
-          </h2>
-          <p className="text-lg text-gray-600 leading-relaxed">
-            Browse through our collection of premium properties featuring luxury
-            homes, innovative designs, and exceptional craftsmanship that define
-            the Kstone Homes experience.
-          </p>
+      <section className="">
+        <div className="container">
+          <div className="text-center max-w-5xl mx-auto mb-5">
+            <h2 className="title mb-5">Modern Design Gallery</h2>
+            <p className="content">
+              Explore our stunning portfolio of premium Kstone Homes properties.
+              Discover high-quality visuals that showcase our luxury residences,
+              sophisticated design choices, and the outstanding craftsmanship
+              that define the Kstone Homes lifestyle.
+            </p>
+          </div>
+
+          <div>
+            <GalleryGrid images={images} />
+          </div>
         </div>
       </section>
-
-      {/* Client-side interactive gallery */}
-      <GalleryClient galleryItems={galleryItems} />
-
-      {/* CTA Section */}
-      <CTA />
-    </div>
+    </main>
   );
 }

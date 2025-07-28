@@ -1,28 +1,55 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter, Montserrat } from "next/font/google";
+
+import Footer from "../components/footer/Footer";
+
+import { Alegreya, Inter, Italiana, Montserrat, Roboto } from "next/font/google";
 import { NavigationProvider } from "../../context/navigationContext";
 import { CityProvider } from "../../context/cityContext";
+import CityPopup from "@/components/cityPopup/CityPopup";
 import { CityPopupProvider } from "../../context/CityPopupContext";
-import { ClientComponents } from "./clientLayout";
+import Header from "@/components/header/Header";
+import { ModalProvider } from "@/components/client/modal-provider";
+// import FormModalWrapper from "@/components/client/form-modal-wrapper";
 
-const inter = Inter({
+export const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
-const montserrat = Montserrat({
+export const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["400", "700"],
   variable: "--font-montserrat",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+export const roboto = Roboto({
+  subsets: ["latin"],
+  variable: "--font-roboto",
+  weight: ["400", "500", "700"],
+  display: "swap",
+});
+
+export const italiana = Italiana({
+  subsets: ["latin"],
+  variable: "--font-italiana",
+  weight: ["400"],
+  display: "swap",
+});
+
+export const alegreya = Alegreya({
+  subsets: ["latin"],
+  variable: "--font-alegreya",
+  weight: ["400", "500", "700", "800", "900"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Kstone Homes",
   description: "Your Dream Home, Built with Heart",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-  ),
 };
 
 export default function RootLayout({
@@ -31,18 +58,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="en" className={` scroll-smooth ${inter.variable} ${montserrat.variable} ${roboto.variable} ${italiana.variable} ${alegreya.variable}`}>
       <body
-        className={`${inter.variable} ${montserrat.variable} font-sans antialiased max-w-[1480px] mx-auto`}
-        suppressHydrationWarning
+        id="__next"
+        className={`antialiased`}
       >
-        <NavigationProvider>
-          <CityProvider>
-            <CityPopupProvider>
-              <ClientComponents>{children}</ClientComponents>
-            </CityPopupProvider>
-          </CityProvider>
-        </NavigationProvider>
+        <ModalProvider>
+          <NavigationProvider>
+            <CityProvider>
+              <CityPopupProvider>
+                <Header />
+                <CityPopup />
+                {/* <FormModalWrapper /> */}
+                {children}
+                <Footer />
+              </CityPopupProvider>
+            </CityProvider>
+          </NavigationProvider>
+        </ModalProvider>
       </body>
     </html>
   );

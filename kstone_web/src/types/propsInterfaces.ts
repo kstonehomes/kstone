@@ -1,3 +1,61 @@
+
+ export interface AllFeatures {
+  // Main Features
+  sqft: number;
+  mainHouseSqft: number;
+  bedrooms: string;
+  bathrooms: string;
+  // Key Features
+  kitchen?: number;
+  spiceKitchen?: boolean;
+  spiceKitchenTotal?: string;
+  fullBath?: number;
+  livingRoom?: number;
+  bonusRoom?: number;
+  openToAbove?: boolean;
+  openToAboveTotal?: string;
+  ceilingHeight?: string;
+  doubleBasement?: boolean;
+  basementSqft?: number;
+  garageSuiteSqft?: number;
+  treatedWoodDeck?: boolean;
+  concretePad?: boolean;
+  compositeDeck?: boolean;
+  vinylDeck?: boolean;
+  rearBalcony?: boolean;
+  rearBalconyTotal?: string;
+  frontBalcony?: boolean;
+  featureWalls?: boolean;
+  vinylFlooring?: boolean;
+  tiledFlooring?: boolean;
+  tripleCarGarage?: boolean;
+  doubleCarGarage?: boolean;
+  separateSideEntrance?: boolean;
+  mainFloorFullBedBath?: boolean;
+  rentalGarageSuite?: boolean;
+  parkFacing?: boolean;
+  legalFinishedBasement?: boolean;
+  ownerSuiteBasement?: boolean;
+  // sevenBedsFiveBath?: string;
+  airportNearby?: boolean;
+  playgroundSchoolsNearby?: boolean;
+  golfNearby?: boolean;
+  schoolNearby?: boolean;
+  walkout?: boolean;
+  partialWalkout?: boolean;
+  regularLot?: boolean;
+  vaultedCeiling?: boolean;
+  indentCeiling?: boolean;
+  ceilingHighCabinets?: boolean;
+  dropCeilings?: boolean;
+  carpetFloor?: boolean;
+  tenFTceilings?: boolean;
+  twentyFTceilings?: boolean;
+  enSuites?: number;
+
+  [key: string]: string | number | boolean | undefined;
+}
+
 export interface QuickPossession {
   _id: string;
   houseModel: string;
@@ -5,17 +63,201 @@ export interface QuickPossession {
   community: {
     name: string;
   };
-  sqft: number;
-  beds: number;
-  baths: number;
-  oldPrice: number;
-  newPrice: number;
+  oldPrice?: number;
+  newPrice?: number;
+  address?: string;
   featuredImage: string | null;
-  status: string;
-  availability: string | null;
+  status: "ready" | "pending" | "sold" | "available";
+  readyStatus?: string | null;
+  availableStatus?: string | null;
+  allFeatures: AllFeatures;
+  additionalFeatures?: string[];
+  upgrades?: string[];
   slug: {
     currrent: string;
   };
+}
+export interface PreConstruction {
+  _id: string;
+  houseModel: string;
+  houseType: string;
+  community: {
+    name: string;
+  };
+  oldPrice?: number;
+  newPrice?: number;
+  address?: string;
+  featuredImage: string | null;
+  status?: "ready" | "pending" | "sold" | "available";
+  readyStatus?: string | null;
+  availableStatus?: string | null;
+  allFeatures: AllFeatures;
+  additionalFeatures?: string[];
+  upgrades?: string[];
+  slug: {
+    currrent: string;
+  };
+}
+
+export interface FloorPlan {
+  floor: string;
+  image: string;
+}
+
+export interface QuickPossessionDetail {
+  _id: string;
+  houseModel: string;
+  houseType: string;
+  city: {
+    name: string;
+  };
+  community: {
+    name: string;
+  };
+  garage: string;
+  oldPrice: number;
+  newPrice: number;
+    address?: string;
+  featuredImage: string;
+  status: "ready" | "pending" | "sold" | "available";
+   readyStatus?: string | null;
+  availableStatus?: string | null;
+  houseGallery?: { url: string }[];
+  shortDescription?: string;
+  floorPlans?: FloorPlan[];
+  floorPlanPdf?: string;
+  floorPlanFileName: string | null;
+  slug: string;
+  allFeatures: AllFeatures;
+  additionalFeatures?: string[];
+  upgrades?: string[];
+}
+export interface PreConstructionDetail {
+  _id: string;
+  houseModel: string;
+  houseType: string;
+  city: {
+    name: string;
+  };
+  community: {
+    name: string;
+  };
+  garage: string;
+      address?: string;
+  oldPrice: number;
+  newPrice: number;
+  featuredImage: string;
+  status?: "ready" | "pending" | "sold" | "available";
+ readyStatus?: string | null;
+  availableStatus?: string | null;
+  houseGallery?: { url: string }[];
+  shortDescription?: string;
+  floorPlans?: FloorPlan[];
+  floorPlanPdf?: string;
+  floorPlanFileName: string | null;
+  slug: string;
+  allFeatures: AllFeatures;
+  additionalFeatures?: string[];
+  upgrades?: string[];
+}
+
+export interface FloorPlansProps {
+  _id: string;
+  floorPlanModel: string;
+  floorPlanName: string;
+  garage: string;
+   community?: {
+    name: string;
+  };
+          status?: "ready" | "pending" | "sold" | "available";
+ readyStatus?: string | null;
+  availableStatus?: string | null;
+  shortDescription: string;
+  address?: string;
+  featuredImage: string;
+  slug: {
+    currrent: string;
+  };
+    allFeatures: AllFeatures;
+  additionalFeatures?: string[];
+  upgrades?: string[];
+  floorPlans?: FloorPlan[];
+  floorPlanPdf?: string;
+  floorPlanFileName: string | null;
+}
+export interface FloorPlansCardProps {
+  _id: string;
+  floorPlanModel: string;
+  floorPlanName: string;
+  address?: string;
+   community?: {
+    name: string;
+  };
+  featuredImage: string;
+  slug: {
+    currrent: string;
+  };
+  allFeatures: AllFeatures;
+          status?: "ready" | "pending" | "sold" | "available";
+ readyStatus?: string | null;
+  availableStatus?: string | null;
+  additionalFeatures?: string[];
+  upgrades?: string[];
+  floorPlans?: FloorPlan[];
+  floorPlanPdf?: string;
+  floorPlanFileName: string | null;
+}
+
+export interface ShowHomeProps {
+  _id: string;
+  houseModel: string;
+  slug: string;
+  status?: "ready" | "pending" | "sold" | "available";
+ readyStatus?: string | null;
+  availableStatus?: string | null;
+  shortDescription?: string;
+  featuredImage: string;
+  houseType: string;
+  address?: string;
+  community: {
+    name: string;
+  };
+  province: string;
+  propertySize: number;
+  garage: string;
+  allFeatures: AllFeatures;
+  additionalFeatures?: string[];
+  upgrades?: string[];
+}
+
+export interface ShowHomeSingleProps {
+  _id: string;
+  houseModel: string;
+  houseType: string;
+  streetAddress: string;
+  city: {
+    name: string;
+  };
+  community: {
+    name: string;
+  };
+  province: string;
+  propertySize: number;
+  garage: string;
+      address?: string;
+        status?: "ready" | "pending" | "sold" | "available";
+ readyStatus?: string | null;
+  availableStatus?: string | null;
+  shortDescription?: string;
+  videoTour: string;
+  houseGallery?: { url: string }[];
+  featuredImage: string;
+  floorPlanPdf?: string;
+  floorPlanFileName: string | null;
+  slug: string;
+  allFeatures: AllFeatures;
+  additionalFeatures?: string[];
+  upgrades?: string[];
 }
 
 export interface FilterByCommunityProps {
@@ -32,132 +274,4 @@ export interface Community {
   description: string;
   featuredImage: string;
   slug: string;
-}
-
-export interface GalleryImage {
-  _id: string;
-  altText?: string;
-  image: {
-    asset: {
-      _id: string;
-      url: string;
-      metadata?: {
-        dimensions?: {
-          width: number;
-          height: number;
-          aspectRatio: number;
-        };
-      };
-    };
-  };
-}
-
-
-export interface PropertyCardType {
-  _id: string;
-  houseName: string;
-  propertyState: "preConstruction" | "quickPossession" | "showhome";
-  slug: string;
-  houseType: string;
-  featuredImage: string;
-  community: { name: string };
-  address: string;
-  province?: string;
-  status: "ready" | "pending" | "sold" | "available";
-  readyStatus?: string;
-  availableStatus?: string;
-  oldPrice?: number;
-  newPrice: number;
-  allFeatures: {
-    sqft: string;
-    bedrooms: string;
-    bathrooms: string;
-  };
-}
-
-
-export interface Property {
-  _id: string;
-  houseName: string;
-  propertyState: "preConstruction" | "quickPossession" | "showhome";
-  slug: string;
-  houseType: string;
-  featuredImage: string;
-  city: string;
-  community: {
-    name: string;
-  };
-  shortDescription: string;
-  address?: string;
-  province?: string;
-  status?: "ready" | "pending" | "sold" | "available";
-  readyStatus?: string;
-  availableStatus?: string;
-  oldPrice?: number;
-  newPrice?: number;
-  houseGallery: Array<{
-    url: string;
-    alt?: string | undefined;
-  }>;
-  videoTour?: string;
-  floorPlans?: Array<{
-    floor: string;
-    image: string;
-  }>;
-  garage?: string;
-  allFeatures: {
-    sqft?: string;
-    mainHouseSqft?: string;
-    basementSqft?: string;
-    garageSuiteSqft?: string;
-    bedrooms?: string;
-    bathrooms?: string;
-    kitchen?: number;
-    spiceKitchen?: boolean;
-    spiceKitchenTotal?: string;
-    fullBath?: number;
-    livingRoom?: number;
-    bonusRoom?: boolean;
-    bonusRoomTotal?: string;
-    openToAbove?: boolean;
-    openToAboveTotal?: string;
-    ceilingHeight?: string;
-    doubleBasement?: boolean;
-    treatedWoodDeck?: boolean;
-    concretePad?: boolean;
-    compositeDeck?: boolean;
-    vinylDeck?: boolean;
-    rearBalcony?: boolean;
-    rearBalconyTotal?: number;
-    frontBalcony?: boolean;
-    featureWalls?: boolean;
-    vinylFlooring?: boolean;
-    tiledFlooring?: boolean;
-    tripleCarGarage?: boolean;
-    doubleCarGarage?: boolean;
-    separateSideEntrance?: boolean;
-    mainFloorFullBedBath?: boolean;
-    rentalGarageSuite?: boolean;
-    parkFacing?: boolean;
-    legalFinishedBasement?: boolean;
-    ownerSuiteBasement?: boolean;
-    sevenBedsFiveBath?: string;
-    airportNearby?: boolean;
-    playgroundSchoolsNearby?: boolean;
-    golfNearby?: boolean;
-    schoolNearby?: boolean;
-    walkout?: boolean;
-    partialWalkout?: boolean;
-    regularLot?: boolean;
-    vaultedCeiling?: boolean;
-    indentCeiling?: boolean;
-    ceilingHighCabinets?: boolean;
-    dropCeilings?: boolean;
-    carpetFloor?: boolean;
-    tenFTceilings?: boolean;
-    twentyFTceilings?: boolean;
-  };
-  additionalFeatures?: string[];
-  upgrades?: string[];
-  floorPlan?: string; // PDF asset URL or ref
 }

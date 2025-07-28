@@ -18,98 +18,86 @@ export function manageWithReferences(
 }
 
 const getDocumentTree = async (client: any, id: string, type: string) => {
-  // Get all published properties that reference this document
-  const properties = await client.fetch(
-    `*[references($id) && _type == "property" && !(_id in path("drafts.**"))]{_id}`,
-    {id},
+  const relatedSchemas = [
+    'floorPlans',
+    'preConstruction',
+    'quickPossession',
+    'showCity',
+    'showHome',
+  ]
+
+  const referencedDocs = await Promise.all(
+    relatedSchemas.map((schema) =>
+      client.fetch(
+        `*[references($id) && _type == "${schema}" && !(_id in path("drafts.**"))]{_id}`,
+        {id},
+      ),
+    ),
   )
 
-  // If this is a city, get its published communities too
-  let communities = []
+  let communities: string[] = []
   if (type === 'city') {
-    communities = await client.fetch(
+    const communityDocs = await client.fetch(
       `*[references($id) && _type == "community" && !(_id in path("drafts.**"))]{_id}`,
       {id},
     )
+    communities = communityDocs.map((doc: any) => doc._id)
   }
 
   return {
-    properties: properties.map((p: any) => p._id),
-    communities: communities.map((c: any) => c._id),
+    related: referencedDocs.flat().map((doc: any) => doc._id),
+    communities,
   }
 }
 
 const unpublishDocument = async (client: any, id: string) => {
   try {
-    // 1. First get the published document
     const publishedDoc = await client.getDocument(id)
-    if (!publishedDoc) return // Nothing to unpublish
+    if (!publishedDoc) return
 
-    // 2. Find all draft documents that reference this published document
     const referencingDrafts = await client.fetch(
-      `*[references($id) && _id in path("drafts.**")]{_id, _type}`,
+      `*[references($id) && _id in path("drafts.**")]{_id}`,
       {id},
     )
 
-    // 3. Create a transaction to handle all reference cleanup
     const transaction = client.transaction()
 
-    // 4. For each referencing draft, remove the references
     for (const draft of referencingDrafts) {
-      // Get the draft document to inspect its fields
       const draftDoc = await client.getDocument(draft._id)
-
-      // Find all reference fields pointing to our document
       const refFields = Object.keys(draftDoc).filter((key) => {
         const value = draftDoc[key]
         if (!value) return false
-
-        // Handle direct references
         if (value._ref === id) return true
-
-        // Handle array references
-        if (Array.isArray(value)) {
-          return value.some((item) => item._ref === id)
-        }
-
+        if (Array.isArray(value)) return value.some((v) => v._ref === id)
         return false
       })
 
-      // Unset these reference fields in the draft
       if (refFields.length > 0) {
         transaction.patch(draft._id, {unset: refFields})
       }
     }
 
-    // 5. Execute the reference cleanup
     await transaction.commit()
 
-    // 6. Create a draft copy of the published document
     await client.createOrReplace({
       ...publishedDoc,
       _id: `drafts.${id.replace(/^drafts\./, '')}`,
     })
 
-    // 7. Now it's safe to delete the published document
     await client.delete(id)
   } catch (error) {
-    console.error(`Failed to unpublish document ${id}:`, error)
+    console.error(`Failed to unpublish ${id}:`, error)
     throw error
   }
 }
 
 const handleDocumentTree = async (client: any, id: string, type: string) => {
-  const {properties, communities} = await getDocumentTree(client, id, type)
+  const {related, communities} = await getDocumentTree(client, id, type)
+
+  const allDocs = [...related, ...(type === 'city' ? communities : []), id]
+
   let count = 0
-
-  // Process in correct order: properties → communities → main document
-  const allDocuments = [
-    ...properties,
-    ...(type === 'city' ? communities : []),
-    id, // Main document last
-  ]
-
-  for (const docId of allDocuments) {
+  for (const docId of allDocs) {
     try {
       await unpublishDocument(client, docId)
       count++
@@ -119,7 +107,7 @@ const handleDocumentTree = async (client: any, id: string, type: string) => {
     }
   }
 
-  return count - 1 
+  return count - 1
 }
 
 const DeleteWithReferencesAction: DocumentActionComponent = (props: DocumentActionProps) => {
@@ -137,10 +125,7 @@ const DeleteWithReferencesAction: DocumentActionComponent = (props: DocumentActi
 
     setIsDeleting(true)
     try {
-      // First unpublish all dependent documents in correct order
       const count = await handleDocumentTree(client, id, type)
-
-      // Then delete both draft and published versions of the main document
       await client.delete(id)
       await client.delete(`drafts.${id}`)
 
@@ -168,12 +153,11 @@ const UnpublishWithReferencesAction: DocumentActionComponent = (props: DocumentA
   const [isUnpublishing, setIsUnpublishing] = useState(false)
 
   const handleUnpublish = useCallback(async () => {
-    if (!window.confirm(`This will unpublish this ${type} and all connected documents. Continue?`))
+    if (!window.confirm(`This will UNPUBLISH this ${type} and all connected documents. Continue?`))
       return
 
     setIsUnpublishing(true)
     try {
-      // Handle all documents in the tree
       const count = await handleDocumentTree(client, id, type)
 
       alert(`Successfully unpublished this ${type} and ${count} connected documents`)

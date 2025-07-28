@@ -1,0 +1,141 @@
+"use client";
+import React, { useState } from 'react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+
+const GalleryGrid = ({ images = [] }: { images?: string[] }) => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const defaultImages = [
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=800&h=600&fit=crop'
+  ];
+
+  const galleryImages = images.length > 0 ? images : defaultImages;
+
+  const openLightbox = (index: number) => {
+    setCurrentIndex(index);
+    setSelectedImage(galleryImages[index]);
+  };
+
+  const closeLightbox = () => {
+    setSelectedImage(null);
+  };
+
+  const nextImage = () => {
+    const next = (currentIndex + 1) % galleryImages.length;
+    setCurrentIndex(next);
+    setSelectedImage(galleryImages[next]);
+  };
+
+  const prevImage = () => {
+    const prev = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+    setCurrentIndex(prev);
+    setSelectedImage(galleryImages[prev]);
+  };
+
+  return (
+    <div className="w-full">
+      {/* Gallery Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        {galleryImages.map((image, index) => (
+          <div
+            key={index}
+            className={`
+              relative overflow-hidden rounded-xl cursor-pointer group transition-all duration-300 hover:shadow-2xl
+              ${index === 0 ? 'md:col-span-2 md:row-span-2' : ''}
+              ${index === 3 ? 'lg:col-span-2' : ''}
+            `}
+            onClick={() => openLightbox(index)}
+          >
+            <div className={`
+              aspect-square relative ${index === 0 ? 'md:aspect-[2/1]' : ''} 
+              ${index === 3 ? 'lg:aspect-[2/1]' : ''}
+            `}>
+              <Image
+                src={image}
+                alt={`Gallery image ${index + 1}`}
+                fill
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute bottom-4 left-4 text-offwhite opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span className="text-sm font-medium">View Image</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Lightbox */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+          {/* Close Button */}
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 z-60 p-3 rounded-full bg-black/50 hover:bg-black/70 text-offwhite transition-colors duration-200"
+          >
+            <X size={24} />
+          </button>
+
+          {/* Navigation Buttons */}
+          <button
+            onClick={prevImage}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-60 p-3 rounded-full bg-black/50 hover:bg-black/70 text-offwhite transition-colors duration-200 hidden md:block"
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          <button
+            onClick={nextImage}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-60 p-3 rounded-full bg-black/50 hover:bg-black/70 text-offwhite transition-colors duration-200 hidden md:block"
+          >
+            <ChevronRight size={24} />
+          </button>
+
+          {/* Image Container */}
+          <div className="relative max-w-5xl max-h-full ">
+            <Image
+              src={selectedImage}
+              alt="Lightbox view"
+              width={900}
+              height={900}
+              className="max-w-full max-h-[90vh] object-contain"
+            />
+            
+            {/* Mobile Navigation */}
+            <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-4">
+              <button
+                onClick={prevImage}
+                className="p-3 rounded-full bg-black/50 text-offwhite"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={nextImage}
+                className="p-3 rounded-full bg-black/50 text-offwhite"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+
+          {/* Image Counter */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-offwhite text-sm bg-black/50 px-4 py-2 rounded-full hidden md:block">
+            {currentIndex + 1} / {galleryImages.length}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default GalleryGrid;

@@ -15,6 +15,9 @@ export const CityProvider = ({ children }: { children: React.ReactNode }) => {
     const stored = localStorage.getItem("selectedCity");
     if (stored) {
       setCityState(stored); 
+    } else {
+      setCityState("Edmonton");
+      localStorage.setItem("selectedCity", "Edmonton");
     }
   }, []);
 

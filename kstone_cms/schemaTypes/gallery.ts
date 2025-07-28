@@ -6,29 +6,54 @@ export const imageGallery = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'image',
-      title: 'Image',
-      type: 'image',
-      options: {hotspot: true},
+      name: 'title',
+      title: 'Gallery Title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'altText',
-      title: 'Alternative Text',
-      type: 'string',
-      description: 'The alternative text for the image.',
-      validation: (Rule) => Rule.required().min(4).max(100),
+      name: 'images',
+      title: 'Images',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: 'altText',
+              title: 'Alternative Text',
+              type: 'string',
+              description: 'Alternative text for accessibility',
+            },
+            {
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+              description: 'Optional caption for the image',
+            },
+          ],
+        },
+      ],
+      options: {
+        layout: 'grid',
+      },
     }),
   ],
   preview: {
     select: {
-      media: 'image',
-      altText: 'altText',
+      title: 'title',
+      images: 'images',
     },
     prepare(selection) {
+      const {title, images} = selection
+      const imageCount = images?.length || 0
       return {
-        title: 'Gallery Image',
-        subtitle: selection.altText || 'No alt text',
-        media: selection.media,
+        title: title || 'Untitled Gallery',
+        subtitle: `${imageCount} image${imageCount === 1 ? '' : 's'}`,
+        media: images?.[0],
       }
     },
   },

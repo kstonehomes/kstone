@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     // Email options
     const mailOptions = {
-      from: `SP Homes <${process.env.EMAIL_USER}>`,
+      from: `Kstone Homes <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
       subject: `New Contact Form Submission from ${formData.name}`,
       html: `
@@ -31,12 +31,13 @@ export async function POST(request: Request) {
                 <p><strong style="color: #004080;">Name:</strong> ${formData.name}</p>
                 <p><strong style="color: #004080;">Email:</strong> ${formData.email}</p>
                 <p><strong style="color: #004080;">Phone:</strong> ${formData.phone}</p>
+                <p><strong style="color: #004080;">User interested in:</strong> ${formData.source}</p>
                 <p><strong style="color: #004080;">Contact Preference:</strong> ${formData.contactPreferences}</p>
                 <p><strong style="color: #004080;">Message:</strong></p>
                 <p style="background-color: #f0f8ff; padding: 15px; border-radius: 6px;">${formData.message}</p>
               </div>
               <div style="background-color: #fafafa; padding: 15px 30px; text-align: center; font-size: 12px; color: #888888;">
-                SP Homes • You received this email via contact form submission
+                Kstone Homes • You received this email via contact form submission
               </div>
             </div>
           </div>
