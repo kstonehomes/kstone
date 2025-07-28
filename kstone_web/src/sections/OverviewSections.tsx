@@ -119,7 +119,7 @@ const OverviewSection = () => {
           <div className="relative">
             <div className="relative overflow-hidden rounded-2xl">
               <Image
-                src="/images/sp-showhomes.jpg"
+                src="/images/ks-showhomes.jpg"
                 alt="Modern luxury building"
                 width={600}
                 height={600}
