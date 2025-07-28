@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react"; 
+import React from "react";
 import { client } from "@/sanity/client";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
-import { FaBath, FaRulerCombined, } from "react-icons/fa6";
-import { FaHome, FaMapMarkerAlt,FaCheckCircle, FaClock } from "react-icons/fa";
-import { MdAddHomeWork} from "react-icons/md";
+import { FaBath, FaRulerCombined } from "react-icons/fa6";
+import { FaHome, FaMapMarkerAlt, FaCheckCircle, FaClock } from "react-icons/fa";
+import { MdAddHomeWork } from "react-icons/md";
 import ModalButton from "@/components/client/modal-button";
 import DownloadPDFButton from "@/components/DownloadPDFButton";
 import KeyFeatures from "@/components/KeyFeatures";
@@ -15,11 +15,7 @@ import PropGallery from "@/components/PropGallery";
 import { IoIosBed } from "react-icons/io";
 import { GiHomeGarage } from "react-icons/gi";
 import { TbRulerMeasure } from "react-icons/tb";
-
-
-
-
-
+import { hasKeyFeature } from "@/helperFunction/hasKeyFeature";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -141,9 +137,16 @@ export default async function PreConstructionPage({ params }: Params) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-display font-bold text-secondary mb-4">Home Not Found</h1>
-          <p className="text-secondary/70 font-base mb-8">The home you&apos;re looking for doesn&apos;t exist.</p>
-          <Link href="/quick-possessions" className="bg-primary text-white px-6 py-3  font-display font-semibold hover:bg-secondary transition-colors duration-300">
+          <h1 className="text-4xl font-display font-bold text-secondary mb-4">
+            Home Not Found
+          </h1>
+          <p className="text-secondary/70 font-base mb-8">
+            The home you&apos;re looking for doesn&apos;t exist.
+          </p>
+          <Link
+            href="/quick-possessions"
+            className="bg-primary text-white px-6 py-3  font-display font-semibold hover:bg-secondary transition-colors duration-300"
+          >
             View All Homes
           </Link>
         </div>
@@ -152,20 +155,32 @@ export default async function PreConstructionPage({ params }: Params) {
   }
 
   const statusConfig = {
-    ready: { color: "bg-emerald-500", text: "Move in Ready " + `${propertyData.readyStatus ? `${propertyData.readyStatus}` : ""}`, icon: "🟢" },
+    ready: {
+      color: "bg-emerald-500",
+      text:
+        "Move in Ready " +
+        `${propertyData.readyStatus ? `${propertyData.readyStatus}` : ""}`,
+      icon: "🟢",
+    },
     pending: { color: "bg-amber-500", text: "Pending ", icon: "🟡" },
     sold: { color: "bg-red-500", text: "Sold Out", icon: "🔴" },
-    available: { color: "bg-blue-500", text: "Available " + `${propertyData.availableStatus ? `${propertyData.availableStatus}` : ""}`, icon: "🔵" }
+    available: {
+      color: "bg-blue-500",
+      text:
+        "Available " +
+        `${propertyData.availableStatus ? `${propertyData.availableStatus}` : ""}`,
+      icon: "🔵",
+    },
   } as const;
 
   const defaultStatus = { color: "bg-gray-500", text: "undefined", icon: "⚪" };
-  const currentStatus = propertyData.status && propertyData.status in statusConfig ? statusConfig[propertyData.status as keyof typeof statusConfig] : defaultStatus;
+  const currentStatus =
+    propertyData.status && propertyData.status in statusConfig
+      ? statusConfig[propertyData.status as keyof typeof statusConfig]
+      : defaultStatus;
 
-  const hasSavings = propertyData.oldPrice && propertyData.oldPrice > propertyData.newPrice;
-
- 
-
-
+  const hasSavings =
+    propertyData.oldPrice && propertyData.oldPrice > propertyData.newPrice;
 
   return (
     <main className="bg-white">
@@ -175,8 +190,8 @@ export default async function PreConstructionPage({ params }: Params) {
         backgroundImage="/images/ks-quickpossession.jpg"
         breadcrumbs={[
           { label: "Home", href: "/" },
-            { label: "pre-construction", href: "/pre-construction" },
-          { label: propertyData.houseModel }
+          { label: "pre-construction", href: "/pre-construction" },
+          { label: propertyData.houseModel },
         ]}
       />
 
@@ -196,30 +211,36 @@ export default async function PreConstructionPage({ params }: Params) {
               <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 to-transparent"></div>
 
               {/* Status Badge */}
-              {currentStatus.text !== 'undefined' && (
-              <div className={`absolute top-0 left-0 ${currentStatus.color} text-white px-4 py-2 md:px-8 md:py-5 font-display font-bold text-xl md:text-3xl shadow-lg backdrop-blur-sm`}>
-                {currentStatus.icon} {currentStatus.text}
-              </div>
+              {currentStatus.text !== "undefined" && (
+                <div
+                  className={`absolute top-0 left-0 ${currentStatus.color} text-white px-4 py-2 md:px-8 md:py-5 font-display font-bold text-xl md:text-3xl shadow-lg backdrop-blur-sm`}
+                >
+                  {currentStatus.icon} {currentStatus.text}
+                </div>
               )}
 
               {/* Price Badge */}
-              
+
               {propertyData.newPrice && (
-              <div className="absolute bottom-0 right-0 bg-white backdrop-blur-sm md:p-4 p-2 shadow-xl border border-white">
-                {hasSavings && (
-                  <div className="text-sm font-base text-red-500 line-through mb-1 text-center">
-                    ${propertyData.oldPrice!.toLocaleString()}
+                <div className="absolute bottom-0 right-0 bg-white backdrop-blur-sm md:p-4 p-2 shadow-xl border border-white">
+                  {hasSavings && (
+                    <div className="text-sm font-base text-red-500 line-through mb-1 text-center">
+                      ${propertyData.oldPrice!.toLocaleString()}
+                    </div>
+                  )}
+                  <div className="md:text-4xl text-2xl font-display font-bold text-green-500 text-center">
+                    ${propertyData.newPrice.toLocaleString()}
                   </div>
-                )}
-                <div className="md:text-4xl text-2xl font-display font-bold text-green-500 text-center">
-                  ${propertyData.newPrice.toLocaleString()}
+                  {hasSavings && (
+                    <div className="text-sm font-display font-semibold text-primary text-center mt-1">
+                      Save $
+                      {(
+                        propertyData.oldPrice! - propertyData.newPrice
+                      ).toLocaleString()}
+                    </div>
+                  )}
                 </div>
-                {hasSavings && (
-                  <div className="text-sm font-display font-semibold text-primary text-center mt-1">
-                    Save ${(propertyData.oldPrice! - propertyData.newPrice).toLocaleString()}
-                  </div>
-                )}
-              </div> )}
+              )}
             </div>
 
             {/* Content */}
@@ -227,159 +248,224 @@ export default async function PreConstructionPage({ params }: Params) {
               {/* Header */}
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
                 <div>
-                    <h1 className="text-4xl font-display font-bold text-secondary mb-2">
-                      {propertyData.houseModel}
-                    </h1>
-                    <h3 className="title text-xl font-medium mb-1 text-gray-500">{propertyData.houseType}</h3>
-                    <div className="flex items-center text-lg font-base text-gray-500 mb-1">
-                      {propertyData.community?.name}, {propertyData.city?.name}
-                    </div>
-                    
-                    {propertyData.address &&(
-                    <div className="flex items-center text-lg font-base text-gray-500">
-                    <FaMapMarkerAlt className="w-5 h-5 text-primary mr-2" />
-                    {propertyData.address}
-                    </div>
-                    )}
+                  <h1 className="text-4xl font-display font-bold text-secondary mb-2">
+                    {propertyData.houseModel}
+                  </h1>
+                  <h3 className="title text-xl font-medium mb-1 text-gray-500">
+                    {propertyData.houseType}
+                  </h3>
+                  <div className="flex items-center text-lg font-base text-gray-500 mb-1">
+                    {propertyData.community?.name}, {propertyData.city?.name}
                   </div>
 
+                  {propertyData.address && (
+                    <div className="flex items-center text-lg font-base text-gray-500">
+                      <FaMapMarkerAlt className="w-5 h-5 text-primary mr-2" />
+                      {propertyData.address}
+                    </div>
+                  )}
+                </div>
+
                 <div className="t-6 lg:mt-0 flex gap-4 md:flex-row flex-col">
-                  <ModalButton source={`${propertyData.houseModel}, ${propertyData.community?.name}, ${propertyData.city?.name}`} label="Schedule Visit" />
-                  <DownloadPDFButton href={propertyData.floorPlanPdf} fileName={propertyData.floorPlanFileName} />
+                  <ModalButton
+                    source={`${propertyData.houseModel}, ${propertyData.community?.name}, ${propertyData.city?.name}`}
+                    label="Schedule Visit"
+                  />
+                  <DownloadPDFButton
+                    href={propertyData.floorPlanPdf}
+                    fileName={propertyData.floorPlanFileName}
+                  />
                 </div>
               </div>
 
               {/* Main Specs Grid */}
               <div className="property-features-grid gap-3 md:gap-5">
-                              <div className="property-features-col">
-                                <div className="property-features-icon">
-                                  <FaRulerCombined className="" /> 
-                                </div>
-                                <div className="property-features-content">
-                                  <div className="property-features-title">{propertyData.allFeatures.sqft}</div>
-                                  <div className="property-features-label">Total SQFT</div>
-                                </div>
-                              </div>
-                              <div className="property-features-col">
-                                <div className="property-features-icon">
-                                  <FaHome className="" />
-                                </div>
-                                <div className="property-features-content">
-                                  <div className="property-features-title">{propertyData.allFeatures.mainHouseSqft}</div>
-                                  <div className="property-features-label">Main House SQFT</div>
-                                </div>
-                              </div>
-                              <div className="property-features-col">
-                                <div className="property-features-icon">
-                                  <TbRulerMeasure className="" />
-                                </div>
-                                <div className="property-features-content">
-                                  <div className="property-features-title">{propertyData.allFeatures.basementSqft}</div>
-                                  <div className="property-features-label">Basement SQFT</div>
-                                </div>
-                              </div>
-                              <div className="property-features-col">
-                                <div className="property-features-icon">
-                                  <GiHomeGarage />
-                                </div>
-                                <div className="property-features-content">
-                                  <div className="property-features-title">{propertyData.allFeatures.garageSuiteSqft}</div>
-                                  <div className="property-features-label">Garage Suite SQFT</div>
-                                </div>
-                              </div>
-                              <div className="property-features-col">
-                                <div className="property-features-icon">
-                                  <IoIosBed className="" />
-                                </div>
-                                <div className="property-features-content">
-                                  <div className="property-features-title">{propertyData.allFeatures.bedrooms}</div>
-                                  <div className="property-features-label">Total Bedrooms</div>
-                                </div>
-                              </div>
-                              <div className="property-features-col">
-                                <div className="property-features-icon">
-                                  <FaBath className="" />
-                                </div>
-                                <div className="property-features-content">
-                                  <div className="property-features-title">{propertyData.allFeatures.bathrooms}</div>
-                                  <div className="property-features-label">Total Bathrooms</div>
-                                </div>
-                              </div>
-                            </div>
-              
-              {/* Description & Features */}
-              <div className="py-5">
-                <div className="">
-                  <h3 className="title">
-                    Property Description
-                    <div className="line"></div>
-                  </h3>
-                  <p className="content">
-                    {propertyData.shortDescription || `Experience luxury living in the ${propertyData.houseModel}, perfectly designed for modern families seeking comfort and elegance.`}
-                  </p>
+                <div className="property-features-col">
+                  <div className="property-features-icon">
+                    <FaRulerCombined className="" />
+                  </div>
+                  <div className="property-features-content">
+                    <div className="property-features-title">
+                      {propertyData.allFeatures?.sqft}
+                    </div>
+                    <div className="property-features-label">Total SQFT</div>
+                  </div>
+                </div>
+                <div className="property-features-col">
+                  <div className="property-features-icon">
+                    <FaHome className="" />
+                  </div>
+                  <div className="property-features-content">
+                    <div className="property-features-title">
+                      {propertyData.allFeatures?.mainHouseSqft}
+                    </div>
+                    <div className="property-features-label">
+                      Main House SQFT
+                    </div>
+                  </div>
+                </div>
+                <div className="property-features-col">
+                  <div className="property-features-icon">
+                    <TbRulerMeasure className="" />
+                  </div>
+                  <div className="property-features-content">
+                    <div className="property-features-title">
+                      {propertyData.allFeatures?.basementSqft}
+                    </div>
+                    <div className="property-features-label">Basement SQFT</div>
+                  </div>
+                </div>
+                <div className="property-features-col">
+                  <div className="property-features-icon">
+                    <GiHomeGarage />
+                  </div>
+                  <div className="property-features-content">
+                    <div className="property-features-title">
+                      {propertyData.allFeatures?.garageSuiteSqft}
+                    </div>
+                    <div className="property-features-label">
+                      Garage Suite SQFT
+                    </div>
+                  </div>
+                </div>
+                <div className="property-features-col">
+                  <div className="property-features-icon">
+                    <IoIosBed className="" />
+                  </div>
+                  <div className="property-features-content">
+                    <div className="property-features-title">
+                      {propertyData.allFeatures?.bedrooms}
+                    </div>
+                    <div className="property-features-label">
+                      Total Bedrooms
+                    </div>
+                  </div>
+                </div>
+                <div className="property-features-col">
+                  <div className="property-features-icon">
+                    <FaBath className="" />
+                  </div>
+                  <div className="property-features-content">
+                    <div className="property-features-title">
+                      {propertyData.allFeatures?.bathrooms}
+                    </div>
+                    <div className="property-features-label">
+                      Total Bathrooms
+                    </div>
+                  </div>
                 </div>
               </div>
 
-            {/* Availability */}
-                          {currentStatus.text !== 'undefined' && (
-                            <div className="bg-primary-bg border border-primary rounded-2xl p-6 text-center mb-10">
-                              <FaClock className="w-8 h-8 text-primary mx-auto mb-3" />
-                              <div className="font-display font-bold text-2xl text-primary mb-1">
-                                {currentStatus.text}
-                              </div>
-                            </div>
-                          )}
+              {/* Description & Features */}
+              {propertyData.shortDescription && (
+                <div className="py-5">
+                  <div className="">
+                    <h3 className="title">
+                      Property Description
+                      <div className="line"></div>
+                    </h3>
+                    <p className="content">
+                      {propertyData.shortDescription ||
+                        `Experience luxury living in the ${propertyData.houseModel}, perfectly designed for modern families seeking comfort and elegance.`}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Availability */}
+              {currentStatus.text !== "undefined" && (
+                <div className="bg-primary-bg border border-primary rounded-2xl p-6 text-center mb-10">
+                  <FaClock className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <div className="font-display font-bold text-2xl text-primary mb-1">
+                    {currentStatus.text}
+                  </div>
+                </div>
+              )}
 
               <div className="features">
                 {/* Key Features */}
-                <div className="property-key-features mb-10">
-                  <h3 className="title text-2xl">Key Features <div className="line"></div></h3>
-                  <KeyFeatures features={propertyData.allFeatures} />
-                </div>
-                {/* Additional Features Grid */}
-                 { propertyData.additionalFeatures && ( 
-                    <div className="additional-features">
-                      <h3 className="title text-2xl">Additional Features <div className="line"></div></h3>
-                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-                        {propertyData.additionalFeatures?.map((feature: string, i: number) => (
-                          <div key={i} className="flex items-center justify-start gap-4 p-4 bg-primary-bg shadow-sm border border-primary hover:shadow-md transition-shadow duration-300">
-                            <div className="text-xl text-primary bg-primary rounded-full p-1"><FaCheckCircle className="text-white/70" /></div>
-                            <div className="font-medium font-display text-base text-secondary">{feature}</div>
-                          </div>
-                        )) || (
-                            <div className="text-secondary font-base italic">Features information not available.</div>
-                          )}
-                      </div>
+                {propertyData.allFeatures &&
+                  hasKeyFeature(propertyData.allFeatures) && (
+                    <div className="property-key-features mb-10">
+                      <h3 className="title text-2xl">
+                        Key Features <div className="line"></div>
+                      </h3>
+                      <KeyFeatures features={propertyData.allFeatures} />
                     </div>
-                 )}
-                
-                {/* Upgrades Features Grid */}
-                { propertyData.upgrades && propertyData.upgrades.length > 0 && ( 
-                  <div className="upgrades py-6">
-                  <h3 className="title text-2xl">Upgrades Available<div className="line"></div></h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-                    {propertyData.upgrades?.map((upgrades: string, i: number) => (
-                      <div key={i} className="flex items-center justify-start gap-4 p-4 bg-primary-bg shadow-sm border border-primary hover:shadow-md transition-shadow duration-300">
-                        <div className="text-xl text-white bg-primary rounded-full p-1"><MdAddHomeWork className="" /></div>
-                        <div className="font-medium font-display text-base text-secondary">{upgrades}</div>
-                      </div>
-                    )) || (
-                        <div className="text-secondary font-base italic">Features information not available.</div>
-                      )}
-                  </div>
-                </div>
                   )}
+
+                {/* Additional Features Grid */}
+                {propertyData.additionalFeatures && (
+                  <div className="additional-features">
+                    <h3 className="title text-2xl">
+                      Additional Features <div className="line"></div>
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
+                      {propertyData.additionalFeatures?.map(
+                        (feature: string, i: number) => (
+                          <div
+                            key={i}
+                            className="flex items-center justify-start gap-4 p-4 bg-primary-bg shadow-sm border border-primary hover:shadow-md transition-shadow duration-300"
+                          >
+                            <div className="text-xl text-primary bg-primary rounded-full p-1">
+                              <FaCheckCircle className="text-white/70" />
+                            </div>
+                            <div className="font-medium font-display text-base text-secondary">
+                              {feature}
+                            </div>
+                          </div>
+                        )
+                      ) || (
+                        <div className="text-secondary font-base italic">
+                          Features information not available.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Upgrades Features Grid */}
+                {propertyData.upgrades && propertyData.upgrades.length > 0 && (
+                  <div className="upgrades py-6">
+                    <h3 className="title text-2xl">
+                      Upgrades Available<div className="line"></div>
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
+                      {propertyData.upgrades?.map(
+                        (upgrades: string, i: number) => (
+                          <div
+                            key={i}
+                            className="flex items-center justify-start gap-4 p-4 bg-primary-bg shadow-sm border border-primary hover:shadow-md transition-shadow duration-300"
+                          >
+                            <div className="text-xl text-white bg-primary rounded-full p-1">
+                              <MdAddHomeWork className="" />
+                            </div>
+                            <div className="font-medium font-display text-base text-secondary">
+                              {upgrades}
+                            </div>
+                          </div>
+                        )
+                      ) || (
+                        <div className="text-secondary font-base italic">
+                          Features information not available.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
               {/* Gallery Section */}
-              {propertyData.houseGallery && propertyData.houseGallery.length > 0 && (
-                <PropGallery images={propertyData.houseGallery} title="Home Gallery" />
-              )}
+              {propertyData.houseGallery &&
+                propertyData.houseGallery.length > 0 && (
+                  <PropGallery
+                    images={propertyData.houseGallery}
+                    title="Home Gallery"
+                  />
+                )}
             </div>
           </div>
         </div>
       </section>
-
-
 
       {/* Floor Plans */}
       {propertyData.floorPlans && propertyData.floorPlans.length > 0 && (
@@ -415,8 +501,8 @@ export default async function PreConstructionPage({ params }: Params) {
         </section>
       )}
       <div className="container">
-                      {/* Availability */}
-              {/* {propertyData.availability && (
+        {/* Availability */}
+        {/* {propertyData.availability && (
                 <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 border border-emerald-200 rounded-2xl p-6 text-center mb-10">
                   <FaClock className="w-8 h-8 text-emerald-600 mx-auto mb-3" />
                   <div className="font-display font-bold text-2xl text-emerald-700 mb-1">

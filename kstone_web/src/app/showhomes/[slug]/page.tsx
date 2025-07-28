@@ -22,6 +22,7 @@ import PropGallery from "@/components/PropGallery";
 import { IoIosBed } from "react-icons/io";
 import { GiHomeGarage } from "react-icons/gi";
 import { TbRulerMeasure } from "react-icons/tb";
+import { hasKeyFeature } from "@/helperFunction/hasKeyFeature";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -143,7 +144,7 @@ export default async function ShowHomeSingle({ params }: Params) {
 }`,
     { slug }
   );
-
+console.log("Fetched home data:", home);
   if (!home) {
     return (
       <div className="min-h-screen bg-white flex flex-col justify-center items-center px-4">
@@ -289,7 +290,7 @@ export default async function ShowHomeSingle({ params }: Params) {
                   </div>
                   <div className="property-features-content">
                     <div className="property-features-title">
-                      {home.allFeatures.sqft}
+                      {home.allFeatures?.sqft}
                     </div>
                     <div className="property-features-label">Total SQFT</div>
                   </div>
@@ -300,7 +301,7 @@ export default async function ShowHomeSingle({ params }: Params) {
                   </div>
                   <div className="property-features-content">
                     <div className="property-features-title">
-                      {home.allFeatures.mainHouseSqft}
+                      {home.allFeatures?.mainHouseSqft}
                     </div>
                     <div className="property-features-label">
                       Main House SQFT
@@ -313,7 +314,7 @@ export default async function ShowHomeSingle({ params }: Params) {
                   </div>
                   <div className="property-features-content">
                     <div className="property-features-title">
-                      {home.allFeatures.basementSqft}
+                      {home.allFeatures?.basementSqft}
                     </div>
                     <div className="property-features-label">Basement SQFT</div>
                   </div>
@@ -324,7 +325,7 @@ export default async function ShowHomeSingle({ params }: Params) {
                   </div>
                   <div className="property-features-content">
                     <div className="property-features-title">
-                      {home.allFeatures.garageSuiteSqft}
+                      {home.allFeatures?.garageSuiteSqft}
                     </div>
                     <div className="property-features-label">
                       Garage Suite SQFT
@@ -337,7 +338,7 @@ export default async function ShowHomeSingle({ params }: Params) {
                   </div>
                   <div className="property-features-content">
                     <div className="property-features-title">
-                      {home.allFeatures.bedrooms}
+                      {home.allFeatures?.bedrooms}
                     </div>
                     <div className="property-features-label">
                       Total Bedrooms
@@ -350,7 +351,7 @@ export default async function ShowHomeSingle({ params }: Params) {
                   </div>
                   <div className="property-features-content">
                     <div className="property-features-title">
-                      {home.allFeatures.bathrooms}
+                      {home.allFeatures?.bathrooms}
                     </div>
                     <div className="property-features-label">
                       Total Bathrooms
@@ -360,18 +361,20 @@ export default async function ShowHomeSingle({ params }: Params) {
               </div>
 
               {/* Description & Features */}
-              <div className="py-5">
-                <div className="">
-                  <h3 className="title">
-                    Property Description
-                    <div className="line"></div>
-                  </h3>
-                  <p className="content">
-                    {home.shortDescription ||
-                      `Experience luxury living in the ${home.houseModel}, perfectly designed for modern families seeking comfort and elegance.`}
-                  </p>
+              {home.shortDescription && (
+                <div className="py-5">
+                  <div className="">
+                    <h3 className="title">
+                      Property Description
+                      <div className="line"></div>
+                    </h3>
+                    <p className="content">
+                      {home.shortDescription ||
+                        `Experience luxury living in the ${home.houseModel}, perfectly designed for modern families seeking comfort and elegance.`}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Availability */}
               {currentStatus.text !== "undefined" && (
@@ -384,12 +387,15 @@ export default async function ShowHomeSingle({ params }: Params) {
               )}
               <div className="features">
                 {/* Key Features */}
-                <div className="property-key-features mb-10">
-                  <h3 className="title text-2xl">
-                    Key Features <div className="line"></div>
-                  </h3>
-                  <KeyFeatures features={home.allFeatures} />
-                </div>
+                {home.allFeatures && hasKeyFeature(home.allFeatures) && (
+                  <div className="property-key-features mb-10">
+                    <h3 className="title text-2xl">
+                      Key Features <div className="line"></div>
+                    </h3>
+                    <KeyFeatures features={home.allFeatures} />
+                  </div>
+                )}
+
                 {/* Additional Features Grid */}
                 {home.additionalFeatures && (
                   <div className="additional-features">

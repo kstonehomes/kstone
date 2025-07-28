@@ -48,7 +48,6 @@ export const revalidate = 60; // Revalidate every 60 seconds
 export default async function Gallery() {
   const gallery = await client.fetch(query);
   const images: GalleryImage[] = gallery?.images ?? [];
-  console.log("Gallery images:", images);
   
 
   return (

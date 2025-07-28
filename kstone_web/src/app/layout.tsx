@@ -58,10 +58,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={` scroll-smooth ${inter.variable} ${montserrat.variable} ${roboto.variable} ${italiana.variable} ${alegreya.variable}`}>
+    <html lang="en" className={` scroll-smooth ${inter.variable} ${montserrat.variable}`}>
       <body
         id="__next"
-        className={`antialiased`}
+        className={`antialiased overflow-x-hidden`}
       >
         <ModalProvider>
           <NavigationProvider>

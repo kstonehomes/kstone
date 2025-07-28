@@ -154,12 +154,12 @@ const Header: React.FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 border-b border-gray-50/30 text-white transform transition-all duration-500 ease-in-out
+        className={`fixed top-0 left-0 w-full z-50 border-b border-gray-50/30 lg:border-black/20 text-white transform transition-all duration-500 ease-in-out
           ${
             active === "/"
               ? scrolled
                 ? "bg-secondary shadow-md translate-y-0 opacity-100"
-                : "bg-secondary/30 translate-y-0 opacity-100"
+                : "bg-secondary/30 lg:bg-secondary/20 translate-y-0 opacity-100"
               : scrolled
                 ? "bg-secondary shadow-md"
                 : "bg-secondary shadow-md "
@@ -179,7 +179,7 @@ const Header: React.FC = () => {
             <nav className="hidden lg:block">
               <menu
                 ref={navRef}
-                className="flex justify-between items-stretch gap-5 h-full"
+                className="flex justify-between items-stretch gap-2 h-full"
               >
                 {isCalculated &&
                   navLinks.map((link, i) => (
@@ -266,7 +266,7 @@ const Header: React.FC = () => {
               className={`hidden lg:flex btn btn-cta md:px-3 lg:px-4 ${
                 scrolled
                   ? "btn-primary"
-                  : "bg-white/10 text-white hover:bg-primary"
+                  : "bg-primary/70 text-white hover:bg-primary"
               }`}
             >
               <span className="btn-icon">
@@ -298,7 +298,7 @@ const Header: React.FC = () => {
             transition={{ duration: 0.3 }}
           >
             <motion.div
-              className="absolute inset-0 bg-black/50"
+              className="absolute inset-0 bg-secondary/50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -306,7 +306,7 @@ const Header: React.FC = () => {
               onClick={() => setMobileOpen(false)}
             />
             <motion.div
-              className="absolute right-0 top-0 h-full w-80 max-w-[80vw] bg-secondary shadow-2xl z-50 flex flex-col"
+              className="absolute right-0 top-0 h-full w-80 max-w-[80vw] bg-secondary border-l-1 border-gray-500 shadow-2xl z-50 flex flex-col"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}

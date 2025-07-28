@@ -4,16 +4,13 @@
   --color-offwhite: #efefef;
   --color-primary: #94792f;
   --color-primary-bg: #fbf6ea;
-  --color-secondary: #1b3942;
+  --color-secondary: #000;
   --color-secondary-dark: #102227;
 }
 
 @theme inline {
   --font-base: var(--font-inter);
   --font-montserrat: var(--font-montserrat);
-  --font-roboto: var(--font-roboto);
-  --font-italiana: var(--font-italiana);
-  --font-alegreya: var(--font-alegreya);
   --color-offwhite: var(--color-offwhite);
   --color-primary: var(--color-primary);
   --color-primary-bg: var(--color-primary-bg);
@@ -31,19 +28,19 @@
 }
 @layer components{
   h1,h2,h3,h4,h5,h6{
-    @apply font-roboto
+    @apply font-montserrat
   }
 
   h1{
-    @apply font-alegreya
+    @apply font-montserrat
   }
 
   h2{
-    @apply font-alegreya
+    @apply font-montserrat
   }
 
   h2.title{
-    @apply font-italiana text-4xl lg:text-5xl font-semibold text-primary leading-tight capitalize
+    @apply font-montserrat text-4xl lg:text-5xl font-semibold text-primary leading-tight capitalize
   }
   /* h2.title > span{
     @apply font-bold text-secondary
@@ -58,7 +55,7 @@
     @apply w-24 max-w-36 h-1 bg-gradient-to-r from-primary to-primary/50 mt-2 mb-6
    }
   p.content{
-    @apply font-roboto text-secondary text-lg leading-relaxed
+    @apply font-montserrat text-secondary text-lg leading-relaxed
   }
   button{
     @apply font-montserrat cursor-pointer

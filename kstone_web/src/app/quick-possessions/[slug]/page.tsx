@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react"; 
+import React from "react";
 import { client } from "@/sanity/client";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import { FaBath, FaRulerCombined, FaClock } from "react-icons/fa6";
-import { FaHome, FaMapMarkerAlt,FaCheckCircle } from "react-icons/fa";
-import { MdAddHomeWork} from "react-icons/md";
+import { FaHome, FaMapMarkerAlt, FaCheckCircle } from "react-icons/fa";
+import { MdAddHomeWork } from "react-icons/md";
 import ModalButton from "@/components/client/modal-button";
 import DownloadPDFButton from "@/components/DownloadPDFButton";
 import KeyFeatures from "@/components/KeyFeatures";
@@ -15,11 +15,7 @@ import PropGallery from "@/components/PropGallery";
 import { TbRulerMeasure } from "react-icons/tb";
 import { GiHomeGarage } from "react-icons/gi";
 import { IoIosBed } from "react-icons/io";
-
-
-
-
-
+import { hasKeyFeature } from "@/helperFunction/hasKeyFeature";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -141,9 +137,16 @@ export default async function QuickPossessionPage({ params }: Params) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-display font-bold text-secondary mb-4">Home Not Found</h1>
-          <p className="text-secondary/70 font-base mb-8">The home you&apos;re looking for doesn&apos;t exist.</p>
-          <Link href="/quick-possessions" className="bg-primary text-white px-6 py-3  font-display font-semibold hover:bg-secondary transition-colors duration-300">
+          <h1 className="text-4xl font-display font-bold text-secondary mb-4">
+            Home Not Found
+          </h1>
+          <p className="text-secondary/70 font-base mb-8">
+            The home you&apos;re looking for doesn&apos;t exist.
+          </p>
+          <Link
+            href="/quick-possessions"
+            className="bg-primary text-white px-6 py-3  font-display font-semibold hover:bg-secondary transition-colors duration-300"
+          >
             View All Homes
           </Link>
         </div>
@@ -152,14 +155,27 @@ export default async function QuickPossessionPage({ params }: Params) {
   }
 
   const statusConfig = {
-    ready: { color: "bg-emerald-500", text: "Move in Ready " + `${possession.readyStatus ? `${possession.readyStatus}` : ""}`, icon: "🟢" },
+    ready: {
+      color: "bg-emerald-500",
+      text:
+        "Move in Ready " +
+        `${possession.readyStatus ? `${possession.readyStatus}` : ""}`,
+      icon: "🟢",
+    },
     pending: { color: "bg-amber-500", text: "Pending ", icon: "🟡" },
     sold: { color: "bg-red-500", text: "Sold Out", icon: "🔴" },
-    available: { color: "bg-blue-500", text: "Available " + `${possession.availableStatus ? `${possession.availableStatus}` : ""}`, icon: "🔵" }
+    available: {
+      color: "bg-blue-500",
+      text:
+        "Available " +
+        `${possession.availableStatus ? `${possession.availableStatus}` : ""}`,
+      icon: "🔵",
+    },
   };
 
   const currentStatus = statusConfig[possession.status];
-  const hasSavings = possession.oldPrice && possession.oldPrice > possession.newPrice;
+  const hasSavings =
+    possession.oldPrice && possession.oldPrice > possession.newPrice;
 
   // Helper function to get garage display text
   // const getGarageText = (garage: string) => {
@@ -182,8 +198,6 @@ export default async function QuickPossessionPage({ params }: Params) {
   //   return floorMap[floor] || floor;
   // };
 
-
-
   return (
     <main className="bg-white">
       <PageHeader
@@ -193,7 +207,7 @@ export default async function QuickPossessionPage({ params }: Params) {
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "Quick Possession", href: "/quick-possessions" },
-          { label: possession.houseModel }
+          { label: possession.houseModel },
         ]}
       />
 
@@ -213,55 +227,66 @@ export default async function QuickPossessionPage({ params }: Params) {
               <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 to-transparent"></div>
 
               {/* Status Badge */}
-              <div className={`absolute top-0 left-0 ${currentStatus.color} text-white px-4 py-2 md:px-8 md:py-5 font-display font-bold text-xl md:text-3xl shadow-lg backdrop-blur-sm`}>
+              <div
+                className={`absolute top-0 left-0 ${currentStatus.color} text-white px-4 py-2 md:px-8 md:py-5 font-display font-bold text-xl md:text-3xl shadow-lg backdrop-blur-sm`}
+              >
                 {currentStatus.icon} {currentStatus.text}
               </div>
 
               {/* Price Badge */}
               {possession.status === "ready" && (
                 <div className="absolute bottom-0 right-0 bg-white backdrop-blur-sm md:p-4 p-2 shadow-xl border border-white">
-                {hasSavings && (
-                  <div className="text-sm font-base text-red-500 line-through mb-1 text-center">
-                    ${possession.oldPrice!.toLocaleString()}
+                  {hasSavings && (
+                    <div className="text-sm font-base text-red-500 line-through mb-1 text-center">
+                      ${possession.oldPrice!.toLocaleString()}
+                    </div>
+                  )}
+                  <div className="md:text-4xl text-2xl font-display font-bold text-green-500 text-center">
+                    ${possession.newPrice.toLocaleString()}
                   </div>
-                )}
-                <div className="md:text-4xl text-2xl font-display font-bold text-green-500 text-center">
-                  ${possession.newPrice.toLocaleString()}
+                  {hasSavings && (
+                    <div className="text-sm font-display font-semibold text-primary text-center mt-1">
+                      Save $
+                      {(
+                        possession.oldPrice! - possession.newPrice
+                      ).toLocaleString()}
+                    </div>
+                  )}
                 </div>
-                {hasSavings && (
-                  <div className="text-sm font-display font-semibold text-primary text-center mt-1">
-                    Save ${(possession.oldPrice! - possession.newPrice).toLocaleString()}
-                  </div>
-                )}
-              </div>
               )}
-              
             </div>
 
             {/* Content */}
             <div className="p-3 md:p-8">
               {/* Header */}
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
-                
                 <div>
                   <h1 className="text-4xl font-display font-bold text-secondary mb-2">
                     {possession.houseModel}
                   </h1>
-                  <h3 className="title text-xl font-medium mb-1 text-gray-500">{possession.houseType}</h3>
+                  <h3 className="title text-xl font-medium mb-1 text-gray-500">
+                    {possession.houseType}
+                  </h3>
                   <div className="flex items-center text-lg font-base text-gray-500 mb-1">
                     {possession.community?.name}, {possession.city?.name}
                   </div>
-                  {possession.address &&(
-                  <div className="flex items-center text-lg font-base text-gray-500">
-                  <FaMapMarkerAlt className="w-5 h-5 text-primary mr-2" />
-                   {possession.address}
-                  </div>
+                  {possession.address && (
+                    <div className="flex items-center text-lg font-base text-gray-500">
+                      <FaMapMarkerAlt className="w-5 h-5 text-primary mr-2" />
+                      {possession.address}
+                    </div>
                   )}
                 </div>
 
                 <div className="mt-6 lg:mt-0 flex gap-4 md:flex-row flex-col">
-                  <ModalButton source={`${possession.houseModel}, ${possession.community?.name}, ${possession.city?.name}`} label="Schedule Visit" />
-                  <DownloadPDFButton href={possession.floorPlanPdf} fileName={possession.floorPlanFileName} />
+                  <ModalButton
+                    source={`${possession.houseModel}, ${possession.community?.name}, ${possession.city?.name}`}
+                    label="Schedule Visit"
+                  />
+                  <DownloadPDFButton
+                    href={possession.floorPlanPdf}
+                    fileName={possession.floorPlanFileName}
+                  />
                 </div>
               </div>
 
@@ -269,10 +294,12 @@ export default async function QuickPossessionPage({ params }: Params) {
               <div className="property-features-grid gap-3 md:gap-5">
                 <div className="property-features-col">
                   <div className="property-features-icon">
-                    <FaRulerCombined className="" /> 
+                    <FaRulerCombined className="" />
                   </div>
                   <div className="property-features-content">
-                    <div className="property-features-title">{possession.allFeatures?.sqft.toLocaleString()}</div>
+                    <div className="property-features-title">
+                      {possession.allFeatures?.sqft.toLocaleString()}
+                    </div>
                     <div className="property-features-label">Total SQFT</div>
                   </div>
                 </div>
@@ -281,8 +308,12 @@ export default async function QuickPossessionPage({ params }: Params) {
                     <FaHome className="" />
                   </div>
                   <div className="property-features-content">
-                    <div className="property-features-title">{possession.allFeatures?.mainHouseSqft.toLocaleString()}</div>
-                    <div className="property-features-label">Main House SQFT</div>
+                    <div className="property-features-title">
+                      {possession.allFeatures?.mainHouseSqft.toLocaleString()}
+                    </div>
+                    <div className="property-features-label">
+                      Main House SQFT
+                    </div>
                   </div>
                 </div>
                 <div className="property-features-col">
@@ -290,7 +321,9 @@ export default async function QuickPossessionPage({ params }: Params) {
                     <TbRulerMeasure className="" />
                   </div>
                   <div className="property-features-content">
-                    <div className="property-features-title">{possession.allFeatures?.basementSqft}</div>
+                    <div className="property-features-title">
+                      {possession.allFeatures?.basementSqft}
+                    </div>
                     <div className="property-features-label">Basement SQFT</div>
                   </div>
                 </div>
@@ -299,8 +332,12 @@ export default async function QuickPossessionPage({ params }: Params) {
                     <GiHomeGarage />
                   </div>
                   <div className="property-features-content">
-                    <div className="property-features-title">{possession.allFeatures?.garageSuiteSqft}</div>
-                    <div className="property-features-label">Garage Suite SQFT</div>
+                    <div className="property-features-title">
+                      {possession.allFeatures?.garageSuiteSqft}
+                    </div>
+                    <div className="property-features-label">
+                      Garage Suite SQFT
+                    </div>
                   </div>
                 </div>
                 <div className="property-features-col">
@@ -308,8 +345,12 @@ export default async function QuickPossessionPage({ params }: Params) {
                     <IoIosBed className="" />
                   </div>
                   <div className="property-features-content">
-                    <div className="property-features-title">{possession.allFeatures?.bedrooms}</div>
-                    <div className="property-features-label">Total Bedrooms</div>
+                    <div className="property-features-title">
+                      {possession.allFeatures?.bedrooms}
+                    </div>
+                    <div className="property-features-label">
+                      Total Bedrooms
+                    </div>
                   </div>
                 </div>
                 <div className="property-features-col">
@@ -317,27 +358,34 @@ export default async function QuickPossessionPage({ params }: Params) {
                     <FaBath className="" />
                   </div>
                   <div className="property-features-content">
-                    <div className="property-features-title">{possession.allFeatures?.bathrooms}</div>
-                    <div className="property-features-label">Total Bathrooms</div>
+                    <div className="property-features-title">
+                      {possession.allFeatures?.bathrooms}
+                    </div>
+                    <div className="property-features-label">
+                      Total Bathrooms
+                    </div>
                   </div>
                 </div>
               </div>
-              
+
               {/* Description & Features */}
-              <div className="py-5">
-                <div className="">
-                  <h3 className="title">
-                    Property Description
-                    <div className="line"></div>
-                  </h3>
-                  <p className="content">
-                    {possession.shortDescription || `Experience luxury living in the ${possession.houseModel}, perfectly designed for modern families seeking comfort and elegance.`}
-                  </p>
+              {possession.shortDescription && (
+                <div className="py-5">
+                  <div className="">
+                    <h3 className="title">
+                      Property Description
+                      <div className="line"></div>
+                    </h3>
+                    <p className="content">
+                      {possession.shortDescription ||
+                        `Experience luxury living in the ${possession.houseModel}, perfectly designed for modern families seeking comfort and elegance.`}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Availability */}
-              {(possession.status === "available" || "ready" )  && (
+              {(possession.status === "available" || "ready") && (
                 <div className="bg-primary-bg border border-primary rounded-2xl p-6 text-center mb-10">
                   <FaClock className="w-8 h-8 text-primary mx-auto mb-3" />
                   <div className="font-display font-bold text-2xl text-primary mb-1">
@@ -348,54 +396,88 @@ export default async function QuickPossessionPage({ params }: Params) {
 
               <div className="features">
                 {/* Key Features */}
-                <div className="property-key-features mb-10">
-                  <h3 className="title text-2xl">Key Features <div className="line"></div></h3>
-                  <KeyFeatures features={possession.allFeatures} />
-                </div>
-                {/* Additional Features Grid */}
-                 { possession.additionalFeatures && ( 
-                    <div className="additional-features">
-                      <h3 className="title text-2xl">Additional Features <div className="line"></div></h3>
-                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-                        {possession.additionalFeatures?.map((feature: string, i: number) => (
-                          <div key={i} className="flex items-center justify-start gap-4 p-4 bg-primary-bg shadow-sm border border-primary hover:shadow-md transition-shadow duration-300">
-                            <div className="text-xl text-primary bg-primary rounded-full p-1"><FaCheckCircle className="text-white/70" /></div>
-                            <div className="font-medium font-display text-base text-secondary">{feature}</div>
-                          </div>
-                        )) || (
-                            <div className="text-secondary font-base italic">Features information not available.</div>
-                          )}
-                      </div>
+                {possession.allFeatures &&
+                  hasKeyFeature(possession.allFeatures) && (
+                    <div className="property-key-features mb-10">
+                      <h3 className="title text-2xl">
+                        Key Features <div className="line"></div>
+                      </h3>
+                      <KeyFeatures features={possession.allFeatures} />
                     </div>
-                 )}
-                
-                {/* Upgrades Features Grid */}
-                { possession.upgrades && possession.upgrades.length > 0 && ( 
-                  <div className="upgrades py-6">
-                  <h3 className="title text-2xl">Upgrades Available<div className="line"></div></h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-                    {possession.upgrades?.map((upgrades: string, i: number) => (
-                      <div key={i} className="flex items-center justify-start gap-4 p-4 bg-primary-bg shadow-sm border border-primary hover:shadow-md transition-shadow duration-300">
-                        <div className="text-xl text-white bg-primary rounded-full p-1"><MdAddHomeWork className="" /></div>
-                        <div className="font-medium font-display text-base text-secondary">{upgrades}</div>
-                      </div>
-                    )) || (
-                        <div className="text-secondary font-base italic">Features information not available.</div>
-                      )}
-                  </div>
-                </div>
                   )}
+
+                {/* Additional Features Grid */}
+                {possession.additionalFeatures && (
+                  <div className="additional-features">
+                    <h3 className="title text-2xl">
+                      Additional Features <div className="line"></div>
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
+                      {possession.additionalFeatures?.map(
+                        (feature: string, i: number) => (
+                          <div
+                            key={i}
+                            className="flex items-center justify-start gap-4 p-4 bg-primary-bg shadow-sm border border-primary hover:shadow-md transition-shadow duration-300"
+                          >
+                            <div className="text-xl text-primary bg-primary rounded-full p-1">
+                              <FaCheckCircle className="text-white/70" />
+                            </div>
+                            <div className="font-medium font-display text-base text-secondary">
+                              {feature}
+                            </div>
+                          </div>
+                        )
+                      ) || (
+                        <div className="text-secondary font-base italic">
+                          Features information not available.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Upgrades Features Grid */}
+                {possession.upgrades && possession.upgrades.length > 0 && (
+                  <div className="upgrades py-6">
+                    <h3 className="title text-2xl">
+                      Upgrades Available<div className="line"></div>
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
+                      {possession.upgrades?.map(
+                        (upgrades: string, i: number) => (
+                          <div
+                            key={i}
+                            className="flex items-center justify-start gap-4 p-4 bg-primary-bg shadow-sm border border-primary hover:shadow-md transition-shadow duration-300"
+                          >
+                            <div className="text-xl text-white bg-primary rounded-full p-1">
+                              <MdAddHomeWork className="" />
+                            </div>
+                            <div className="font-medium font-display text-base text-secondary">
+                              {upgrades}
+                            </div>
+                          </div>
+                        )
+                      ) || (
+                        <div className="text-secondary font-base italic">
+                          Features information not available.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
               {/* Gallery Section */}
-              {possession.houseGallery && possession.houseGallery.length > 0 && (
-                <PropGallery images={possession.houseGallery} title="Home Gallery" />
-              )}
+              {possession.houseGallery &&
+                possession.houseGallery.length > 0 && (
+                  <PropGallery
+                    images={possession.houseGallery}
+                    title="Home Gallery"
+                  />
+                )}
             </div>
           </div>
         </div>
       </section>
-
-
 
       {/* Floor Plans */}
       {possession.floorPlans && possession.floorPlans.length > 0 && (
@@ -431,15 +513,15 @@ export default async function QuickPossessionPage({ params }: Params) {
         </section>
       )}
       <div className="container">
-               {/* Availability */}
-              {(possession.status === "available" || "ready" )  && (
-                <div className="bg-primary-bg border border-primary rounded-2xl p-6 text-center mb-10">
-                  <FaClock className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <div className="font-display font-bold text-2xl text-primary mb-1">
-                    {currentStatus.text}
-                  </div>
-                </div>
-              )}
+        {/* Availability */}
+        {(possession.status === "available" || "ready") && (
+          <div className="bg-primary-bg border border-primary rounded-2xl p-6 text-center mb-10">
+            <FaClock className="w-8 h-8 text-primary mx-auto mb-3" />
+            <div className="font-display font-bold text-2xl text-primary mb-1">
+              {currentStatus.text}
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

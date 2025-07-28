@@ -16,8 +16,8 @@ import { useCity } from "../../../context/cityContext";
 import { client } from "@/sanity/client";
 import CTA from "../CTA";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import Logo from "../header/Logo";
 import WhatsAppWidget from "../WhatsAppWidget";
+import Image from "next/image";
 
 // Image paths
 // const spAlignedText = "/images/sp-aligned-text.png";
@@ -129,7 +129,17 @@ const Footer = () => {
                 className="space-y-6"
               >
                 <div className="space-y-4">
-                  <Logo />
+                  <Link href="/" className="flex items-center">
+                    {/* Mobile / Small Screen Logo */}
+                    <Image
+                      src="/images/ks-logo.png"
+                      alt="KS Logo"
+                      width={200}
+                      height={100}
+                      className="block"
+                      priority
+                    />
+                  </Link>
                 </div>
                 <p className="content text-white text-base">
                   Creating exceptional living spaces with modern luxury and
@@ -153,7 +163,7 @@ const Footer = () => {
                     <li key={index}>
                       <Link
                         href={item.href}
-                        className="text-offwhite hover:text-offwhite transition-colors duration-300 flex items-center group"
+                        className="text-white hover:text-white transition-colors duration-300 flex items-center group"
                       >
                         <span className="w-2 h-1 bg-primary rounded-full mr-3 group-hover:w-3 transition-all duration-300" />
                         {item.name}
@@ -184,7 +194,7 @@ const Footer = () => {
                       <li key={community._id}>
                         <Link
                           href={`/communities/${community.slug}`}
-                          className="text-white hover:text-offwhite transition-colors duration-300 flex items-center group hover:font-semibold"
+                          className="text-white hover:text-white transition-colors duration-300 flex items-center group hover:font-semibold"
                         >
                           <HomeIcon className="size-4 mr-3 text-primary group-hover:scale-125 transition-transform duration-300" />
                           {community.name}
@@ -214,13 +224,12 @@ const Footer = () => {
                   <li>
                     <Link
                       target="_blank"
-                      href="https://g.co/kgs/4pJozk9"
+                      href="https://maps.app.goo.gl/XTPJhrc4QDJym4BB6"
                       className="text-secondary hover:font-semibold transition-all duration-300 flex items-start group"
                     >
                       <MapPin className="size-5 text-primary mr-3 mt-0.5 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" />
                       <span className="text-base leading-relaxed text-white">
-                        2817 63 Ave NE, Leduc County T4X 3A6 (Show-Home Coming
-                        Soon)
+                        12 Eldrige Point(e), St. Albert, T8N 8C3
                       </span>
                     </Link>
                   </li>
@@ -249,7 +258,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Footer */}
-        <div className="border-t border-gray-700/50 bg-black/50 backdrop-blur-sm">
+        <div className="border-t border-gray-700/50 bg-secondary-dark backdrop-blur-sm">
           <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               {/* Social Links */}

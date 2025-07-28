@@ -135,9 +135,8 @@ const Contact = () => {
                 {
                   icon: FaLocationDot,
                   title: "Visit Us",
-                  value:
-                    "2817 63rd Ave NE, Leduc County T4X 3A6 (Show-Home Coming Soon)",
-                  href: "https://g.co/kgs/4pJozk9",
+                  value: "12 Eldrige Point(e), St. Albert, T8N 8C3",
+                  href: "https://maps.app.goo.gl/XTPJhrc4QDJym4BB6",
                   description: "See our office location",
                 },
               ].map((info, idx) => (

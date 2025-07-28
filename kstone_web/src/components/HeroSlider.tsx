@@ -19,10 +19,21 @@ interface SlideData {
 }
 
 const slidesData: SlideData[] = [
+  // {
+  //   id: 1,
+  //   type: "image",
+  //   background: "images/ks-hero.jpg",
+  //   subtitle: "Premium living spaces",
+  //   title: "Modern Architecture Redefined",
+  //   actionButton: {
+  //     text: "Explore Now",
+  //     href: "/showhomes",
+  //   },
+  // },
   {
-    id: 1,
-    type: "image",
-    background: "images/ks-hero.jpg",
+    id: 2,
+    type: "video",
+    background: "videos/ks-hero-video.mp4",
     subtitle: "Premium living spaces",
     title: "Modern Architecture Redefined",
     actionButton: {
@@ -30,6 +41,18 @@ const slidesData: SlideData[] = [
       href: "/showhomes",
     },
   },
+  // {
+  //   id: 2,
+  //   type: "video",
+  //   background:
+  //     "https://res.cloudinary.com/dstt3obkb/video/upload/v1753123928/h4ug0ksdxbwwxlfqx1im.mp4",
+  //   subtitle: "Premium living spaces",
+  //   title: "Modern Architecture Redefined",
+  //   actionButton: {
+  //     text: "Explore Now",
+  //     href: "/showhomes",
+  //   },
+  // },
 ];
 
 const HeroSlider: React.FC = () => {
@@ -118,8 +141,11 @@ const HeroSlider: React.FC = () => {
               loop
               playsInline
               preload="auto"
+              poster="/images/video-placeholder.png"
             >
               <source src={currentSlideData.background} type="video/mp4" />
+              {/* This fallback text only appears in unsupported browsers */}
+              Your browser does not support HTML5 video.
             </video>
           )}
 
